@@ -19,6 +19,9 @@ Geprueft wird:
   6. Der Eintrag ist vollstaendig: Klasse, Betrifft, Dateien, Abschnitt Migration.
   7. Die Klasse passt zum Sprung gegenueber dem vorherigen Changelog-Eintrag.
   8. Die unter "Dateien" genannten Pfade existieren.
+  9. Die im Repo aktiv benutzten Schutzkopien sind mit ihren ausgelieferten
+     Vorlagen deckungsgleich. Driften sie auseinander, schuetzt das Repo sich
+     selbst mit einem aelteren Stand als den, den es weitergibt.
 """
 
 import json
@@ -32,6 +35,15 @@ PLUGIN_VERSION_FILE = os.path.join(PLUGIN_DIR, "VERSION")
 PLUGIN_MANIFEST = os.path.join(PLUGIN_DIR, ".claude-plugin", "plugin.json")
 MARKETPLACE = os.path.join(".claude-plugin", "marketplace.json")
 CHANGELOG = "CHANGELOG.md"
+TEMPLATES = os.path.join(PLUGIN_DIR, "skills", "jumpstart", "templates")
+
+# Aktiv benutzte Kopie -> ausgelieferte Vorlage. Eine Quelle, zwei Orte.
+SPIEGEL = [
+    (os.path.join("_meta", "check_privacy.py"),
+     os.path.join(TEMPLATES, "check_privacy.py")),
+    (os.path.join(".githooks", "pre-commit"),
+     os.path.join(TEMPLATES, "pre-commit")),
+]
 
 SEMVER = re.compile(r"^(\d+)\.(\d+)\.(\d+)$")
 ENTRY = re.compile(r"^##\s+v(\d+\.\d+\.\d+)\s+—\s+(\d{4}-\d{2}-\d{2})\s*$", re.M)
@@ -167,6 +179,24 @@ def main():
                         continue
                     if not os.path.exists(pfad):
                         notes.append(f"{CHANGELOG} v{version}: genannter Pfad '{pfad}' existiert nicht.")
+
+    # 9. Schutzkopien gegen ihre Vorlagen
+    for kopie, vorlage in SPIEGEL:
+        if not os.path.isfile(vorlage):
+            errors.append(f"{vorlage} fehlt — Vorlage nicht auslieferbar.")
+            continue
+        if not os.path.isfile(kopie):
+            errors.append(f"{kopie} fehlt — das Repo schuetzt sich selbst nicht.")
+            continue
+        with open(vorlage, "rb") as fh:
+            a = fh.read()
+        with open(kopie, "rb") as fh:
+            b = fh.read()
+        if a != b:
+            errors.append(
+                f"{kopie} weicht von {vorlage} ab. Das Repo arbeitet mit einem anderen "
+                "Stand als dem, den es weitergibt. Vorlage darueberkopieren."
+            )
 
     report(version)
 

@@ -100,7 +100,8 @@ an, wird **nicht** gesichert.
 **Ab Ausbaustufe 2** kommt der Commit dazu. Den letzten Schritt, das Hochladen, machst du
 selbst mit einem Klick — bewusst, damit keine Zugangsdaten in einer KI-Umgebung liegen.
 
-**Bei Ausbaustufe 1** endet der Skill nach dem Tagebucheintrag. Das ist kein Mangel: Die
+**Bei Ausbaustufe 1** endet der Skill nach den Prüfungen und dem Tagebucheintrag — der
+Commit entfällt, die Prüfungen nicht. Schlägt eine an, wird auch hier nicht gesichert. Die
 Mechanik ist dieselbe, nur ohne Werkzeug darunter.
 
 **Sag zum Beispiel:** „Sichere den Stand."

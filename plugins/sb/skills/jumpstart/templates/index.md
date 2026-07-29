@@ -2,6 +2,7 @@
 okf_version: "0.1"
 version: "1.0.0"
 setup_version: "<Version des Jumpstart-Pakets>"
+setup_source: "https://github.com/dutch-vdl/sb-jumpstart"
 setup_track: "<lokal | verteilt | mitlaufend>"
 title: Knowledge Hub
 description: Persönliche Wissensbasis von <Name>.

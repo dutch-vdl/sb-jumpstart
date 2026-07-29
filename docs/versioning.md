@@ -97,8 +97,9 @@ Die Felder im Einzelnen:
 3. **Version setzen** — an allen drei Dateiorten gleichzeitig.
 4. **Changelog-Eintrag schreiben**, vollständig, mit Migrationsabschnitt.
 5. **Release-Gate fahren** (siehe `release-gate.md`): Diff gegen die Abstraktionsregel
-   lesen, `check_privacy.py`, `check_okf.py` — und `check_release.py` für die
-   Versionskonsistenz.
+   lesen, `check_privacy.py` — und `check_release.py` für die Versionskonsistenz. Die
+   Formatprüfung `check_okf.py` gehört nicht dazu: Sie prüft Wissensbasen, und dieses
+   Repository ist keine.
 6. **Freigabe einholen.** Kein Release läuft automatisch durch.
 7. **Committen und pushen.** Der Rest passiert in der Automatik.
 

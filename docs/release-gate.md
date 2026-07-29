@@ -7,8 +7,11 @@ Anwender bekommen.*
 
 Eine Checkliste, die genau einmal abgearbeitet wird:
 
-1. **Platzhalter ersetzen.** In `README.md` steht `<DEIN-GITHUB-NAME>` im Startprompt. Ohne
-   Ersetzung schickt jeder Empfänger Claude auf eine Adresse, die es nicht gibt.
+1. **Platzhalter ersetzen — repo-weit, nicht nur in einer Datei.** Prüfen mit
+   `grep -rn '<[A-Z-]\{4,\}>' --include='*.md' --include='*.json' .` und
+   `grep -rn '<name>/' .`. Ohne Ersetzung schickt jeder Empfänger Claude auf eine Adresse,
+   die es nicht gibt. In v0.1.0 war genau das der Fall: Die README war ersetzt, die
+   Anleitung nicht — weil die Checkliste nur eine Datei nannte.
 2. **Repository anlegen**, öffentlich, ohne Beschreibung und ohne Topics. Keine
    Lizenzdatei — ohne sie gilt das volle Urheberrecht: ansehbar, nicht freigegeben.
 3. **Support-Kanäle abschalten:** Issues, Discussions, Wiki, Projects unter Settings →
@@ -61,10 +64,10 @@ Größenordnung plus Zeitpunkt genügen oft.
    Bei Treffern: entfernen oder abstrahieren. Ein Treffer, der bewusst bleiben soll, bekommt
    `jumpstart-ignore` **mit Begründung** in derselben Zeile. Ohne Begründung ist die
    Freigabe wertlos, weil sie später niemand beurteilen kann.
-3. **Formatprüfung laufen lassen:**
-   ```
-   python3 _meta/check_okf.py
-   ```
+3. **Keine Formatprüfung auf dieses Repo.** `check_okf.py` prüft Wissensbasen, und
+   dieses Repository ist keine — es hat weder Wurzel-`index.md` noch `log.md`. Das
+   Skript liegt hier ausschließlich als Vorlage unter
+   `plugins/sb/skills/jumpstart/templates/` und läuft beim Anwender, nicht hier.
 4. **Version setzen** an allen drei Dateiorten und Changelog-Eintrag mit
    Migrationshinweis schreiben. Den Abgleich nicht von Hand prüfen:
    ```
@@ -74,6 +77,14 @@ Größenordnung plus Zeitpunkt genügen oft.
    Marketplace **kein** eigenes Versionsfeld führt, dass der Quellpfad existiert, und dass
    der Changelog-Eintrag vollständig ist und seine Klasse zum Sprung passt. Details in
    `docs/versioning.md`.
+
+   Zusätzlich hält es die **Schutzkopien und ihre Vorlagen deckungsgleich**:
+   `_meta/check_privacy.py` und `.githooks/pre-commit` sind Kopien der Vorlagen unter
+   `plugins/sb/skills/jumpstart/templates/`. Driften sie auseinander, arbeitet dieses
+   Repository mit einem anderen — womöglich älteren — Schutzstand als dem, den es
+   weitergibt. Das ist kein Schönheitsfehler: Genau so wäre eine bereits behobene Lücke
+   hier still weiterbetrieben worden. Behebung ist immer dieselbe: Vorlage über die Kopie
+   kopieren, nie umgekehrt.
 5. **Freigabe einholen.** Kein Release läuft automatisch durch. Der Job schlägt vor, ein
    Mensch entscheidet.
 6. **Commit und Push.** Der `pre-commit`-Hook prüft ein zweites Mal — als Sicherung, nicht

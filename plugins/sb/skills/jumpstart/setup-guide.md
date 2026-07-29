@@ -51,8 +51,8 @@ des Setups ankommen**.
 **Stufe 1 — Lokal.** Der Hub ist ein normaler Ordner auf einem Rechner. Kein Git, kein
 Cloud-Sync-Konflikt, keine Werkzeugkette. Versionierung läuft über das `version`-Feld und
 `log.md`; die Mechanik ist identisch zu den größeren Stufen, nur ohne Werkzeug darunter.
-Aktualisierungen des Setups kommen als Paket, das die Person herunterlädt; das Upgrade
-fährt ein Skill. Das ist der Standardweg für alle, die anfangen.
+Aktualisierungen holt der Upgrade-Skill selbst von der Adresse, die als `setup_source` im
+Hub vermerkt ist; heruntergeladen werden muss nichts. Das ist der Standardweg für alle, die anfangen.
 
 **Stufe 2 — Verteilt.** Der Hub wird ein eigenes Git-Repository, in der Regel bei GitHub.
 Damit arbeitet die Person über mehrere Geräte hinweg an derselben Basis; das Remote ist
@@ -167,7 +167,8 @@ verschweigen. Sag es der Person einmal klar, statt es zu umgehen.
 
 ## Phase 0 — Orientierung geben
 
-Bevor das Interview beginnt: Wurde `user-readme.md` mitgegeben, zeige der Person **zu
+Bevor das Interview beginnt: Die Datei `user-readme.md` liegt neben dieser Anleitung im
+selben Ordner — lies sie und zeige der Person **zu
 Beginn** deren Inhalt oder eine kurze Zusammenfassung mit Verweis auf die Datei, damit sie
 versteht, was gleich entsteht. Viele Nutzer sind neu im Umgang mit einem Second Brain und
 mit agentischer KI-Arbeit. Lege die Datei später in Phase 2 als `README.md` in die Wurzel
@@ -350,15 +351,23 @@ Bei **Stufe 1** entfällt das ersatzlos. `version` und `log.md` werden trotzdem 
 an geführt.
 
 Die **Entitätenliste** `_meta/privacy-entities.txt` wird beim Aufsetzen gemeinsam mit der
-Person befüllt: Arbeitgeber, Kunden, Produktnamen, Personen, Projektkennungen, der eigene
-Benutzername. Sie steht bei Stufe 2 und 3 in der `.gitignore` und darf unter keinen
+Person befüllt: **Kunden, Mandate, Produktnamen, Personen Dritter, Projektkennungen** und
+technische Bezeichner wie Gerätenamen oder Repository-Adressen.
+
+**Was ausdrücklich NICHT hineingehört: die Person selbst und ihr eigener Arbeitgeber.**
+Beide stehen zwangsläufig in der eigenen Wissensbasis — im Profil, in den Karrierestationen,
+im Kopf der `CLAUDE.md`. Stünden sie auf der Liste, schlüge die Prüfung bei jeder Sicherung
+gegen Dateien an, die das Setup selbst angelegt hat. Sie sind Karrierekontext, nicht
+Schutzgegenstand. Wer eine Ausnahme braucht — etwa eine Adresse, die bewusst in einem Text
+stehen soll —, schreibt `jumpstart-ignore` mit Begründung in dieselbe Zeile. Sie steht bei Stufe 2 und 3 in der `.gitignore` und darf unter keinen
 Umständen versioniert werden — sie ist selbst genau das Leck, das sie verhindern soll. Beim
 Aufsetzen genügt ein Startbestand; die Liste wächst im Weekly Review mit.
 
 Beide Prüfskripte gehören **in allen drei Stufen** dazu. Erwähne es beim
 Anlegen nur beiläufig — ein Anfänger muss es nicht verstehen. Scharf geschaltet wird es
-erst in Phase 6 (Stufe 1: als Block im Weekly Review; Stufe 2/3: zusätzlich als Sperre vor
-jedem Commit). Die Datenschutzprüfung dagegen erklärst du kurz — sie ist der einzige Teil
+erst in Phase 6. **Die Regel ist in allen Stufen dieselbe:** Schlägt eine Prüfung hart an,
+wird nicht gesichert. Was sich unterscheidet, ist nur der Zeitpunkt — bei Stufe 2 und 3
+zusätzlich automatisch vor jedem Commit. Die Datenschutzprüfung dagegen erklärst du kurz — sie ist der einzige Teil
 des Setups, dessen Zweck jemand verstehen muss, damit er ihn ernst nimmt.
 
 ### Ausbaustufe 2 einrichten (nur Stufe 2 und 3)
@@ -418,11 +427,23 @@ einen Konflikt.
 
 **Vorbeugen:** vor der Arbeit holen, nach dem Sichern hochladen. Das ist die ganze Regel.
 
-**Wenn es doch passiert:** Der Konflikt betrifft fast immer nur zwei Stellen — die
-Versionsnummer im Kopf der `index.md` und den obersten Block in `log.md`. Auflösung: die
-**höhere** Versionsnummer behalten und **beide** Log-Blöcke übereinander stehen lassen,
-neuester oben. Danach das Prüfskript laufen lassen; es fängt ab, wenn Version und Log nicht
-mehr zusammenpassen.
+**Wenn es doch passiert**, gibt es zwei Fälle, und der häufigere ist nicht der
+offensichtliche.
+
+*Fall eins, der Regelfall:* Beide Geräte haben auf **dieselbe** Versionsnummer erhöht. Dann
+gibt es in `index.md` gar keinen Konflikt — beide schrieben dasselbe —, und der Konflikt
+sitzt allein in `log.md` innerhalb einer Überschrift. Auflösung: beide Aufzählungspunkte
+unter der einen Überschrift zusammenführen, Konfliktmarker entfernen, dann **eine Version
+überspringen und neu sichern**, damit die übersprungene Nummer nicht auf einem Stand liegt,
+den nur ein Gerät kennt.
+
+*Fall zwei:* Unterschiedliche Versionsnummern. Dann die **höhere** behalten und beide
+Log-Blöcke übereinander stehen lassen, neuester oben.
+
+In beiden Fällen: Die Konfliktmarker `<<<<<<<`, `=======` und `>>>>>>>` müssen vollständig
+verschwinden — das Prüfskript wertet stehengebliebene Marker als harten Verstoß. Wer nicht
+mit der Kommandozeile arbeitet, löst das im Git-Programm über „Resolve conflicts" oder lässt
+Claude die Datei aufräumen.
 
 **Der Sonderfall, den kein Skript findet:** Haben beide Geräte unabhängig auf dieselbe
 Versionsnummer erhöht, ist nach dem Zusammenführen alles lokal stimmig — aber das Tag zeigt
@@ -437,7 +458,8 @@ Ihr Frontmatter trägt vier Felder, die zusammengehören:
 ---
 okf_version: "0.1"
 version: "1.0.0"          # Reife der eigenen Wissensbasis
-setup_version: "1.0.0"    # Version dieses Setups, aus der die Basis entstand
+setup_version: "0.2.0"    # Version dieses Setups, aus der die Basis entstand
+setup_source: "https://github.com/dutch-vdl/sb-jumpstart"   # woher Aktualisierungen kommen
 setup_track: "lokal"      # lokal | verteilt | mitlaufend
 title: Knowledge Hub
 description: …
@@ -837,7 +859,7 @@ automatische Auslösen im passenden Moment. Bequemlichkeit, kein Funktionsunters
   häufigsten vergessen:
 
   1. Quelle hinzufügen — in der Kommandozeilen-Fassung
-     `/plugin marketplace add <name>/sb-jumpstart`, in der Desktop-App über die
+     `/plugin marketplace add dutch-vdl/sb-jumpstart`, in der Desktop-App über die
      Plugin-Verwaltung mit der Repo-Adresse.
   2. Plugin installieren: `/plugin install sb@sb-jumpstart`, danach neu laden.
   3. **Automatische Aktualisierung einschalten.** Sie ist bei eigenen Quellen
@@ -873,7 +895,9 @@ anzulegen.
 
 **Stufe 1:** Änderungen sichten, Versionsschritt bestimmen, `version` in der
 Wurzel-`index.md` setzen, `log.md`-Eintrag schreiben, beide Prüfskripte laufen lassen.
-Fertig.
+**Bei einem harten Verstoß oder einem Datenschutz-Treffer wird nicht gesichert** — stoppen,
+melden, bereinigen. Das gilt hier genauso wie in den größeren Stufen; nur die Automatik
+fehlt.
 
 **Stufe 2 und 3:** zusätzlich — vor der Versionsbestimmung den tatsächlichen
 Repository-Stand einlesen, inzidentelle Dateien aus dem Staging aussortieren, beide
@@ -898,6 +922,11 @@ mkdir -p .githooks && cp <paket>/pre-commit .githooks/pre-commit
 chmod +x .githooks/pre-commit
 git config core.hooksPath .githooks
 ```
+
+**Nach der Einrichtung einmal prüfen, ob der Hook wirklich greift.** Er ist stumm, wenn
+der Konfigurationsbefehl fehlt oder die Datei kein Ausführungsrecht hat — beides meldet
+niemand. Selbsttest: eine Testdatei mit einem Namen aus der Entitätenliste anlegen und
+committen wollen. Der Commit **muss** abbrechen. Tut er es nicht, ist der Hook inaktiv.
 
 Biete das an, dränge nicht — ein Setup, das beim ersten Commit unerwartet blockiert,
 verschreckt Anfänger. Erkläre dabei die drei Grenzen ehrlich: Der Hook wandert nur mit,

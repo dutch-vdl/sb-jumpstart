@@ -18,11 +18,22 @@ zur tatsächlichen Arbeitsweise der Person passt.
 entstanden — dann den Stand aus `log.md` und der vorhandenen Struktur abschätzen und die
 Felder im Zuge des Upgrades ergänzen.
 
-**2. Neuen Stand feststellen.** Die Version steht in der Datei `VERSION` im
-Wurzelverzeichnis des Setup-Pakets. Sind beide gleich, ist nichts zu tun — das sagen und
-aufhören.
+**2. Neuen Stand feststellen.** Wo die aktuelle Version steht, hängt von der Stufe ab:
 
-**3. Changelog lesen.** Alle Einträge zwischen der eigenen und der neuen Version. Jeder
+* **Stufe 1 und 2:** unter der Adresse aus `setup_source`, Datei `VERSION` im
+  Wurzelverzeichnis. Direkt abrufbar über die Rohdatei-Adresse des Repositories.
+* **Stufe 3:** zusätzlich lokal — `VERSION` im Wurzelverzeichnis des installierten Plugins
+  (die *installierte* Fassung) und im Marketplace-Klon (die *zuletzt geholte*). Laufen die
+  beiden auseinander, ist ein Plugin-Update fällig; sag das dazu.
+
+Fehlt `setup_source` im Frontmatter, ist die Basis vor Einführung des Feldes entstanden —
+dann nach der Adresse fragen und das Feld im Zuge des Upgrades ergänzen.
+
+Sind die Versionen gleich, ist nichts zu tun — das sagen und aufhören.
+
+**3. Changelog lesen.** `CHANGELOG.md` liegt im Wurzelverzeichnis der Quelle — bei Stufe 3
+im Marketplace-Klon, nicht im Plugin-Cache. Alle Einträge zwischen der eigenen und der neuen
+Version. Jeder
 Eintrag trägt einen Migrationshinweis. Einträge, die nur eine andere Stufe betreffen,
 werden übersprungen — einem Stufe-1-Nutzer wird keine Marketplace-Aktualisierung
 vorgeschlagen.
@@ -36,7 +47,8 @@ zeigen und entscheiden lassen.
 Datei. Klassifiziert nach *empfohlen*, *optional* und *betrifft dich nicht*. Dann Freigabe
 einholen — einzeln oder als Ganzes.
 
-**6. Einarbeiten**, `setup_version` (und bei Stufenwechsel `setup_track`) setzen,
+**6. Einarbeiten**, `setup_version` (und bei Stufenwechsel `setup_track`, bei fehlender
+Herkunft `setup_source`) setzen,
 `log.md`-Eintrag schreiben, Prüfskripte laufen lassen, sichern.
 
 ## Leitplanken

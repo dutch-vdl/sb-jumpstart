@@ -11,7 +11,20 @@
 #   re:PRJ-\d{4}         regulaerer Ausdruck
 #   # Zeile mit Raute    Kommentar
 
-# --- Arbeitgeber und Stationen ---
+# WAS NICHT HINEINGEHOERT
+# Die eigene Person und der eigene Arbeitgeber. Beide stehen zwangslaeufig im
+# eigenen Bestand — im Profil, in den Karrierestationen, im Kopf der CLAUDE.md.
+# Auf der Liste wuerden sie bei jeder Sicherung gegen Dateien anschlagen, die das
+# Setup selbst angelegt hat. Sie sind Karrierekontext, nicht Schutzgegenstand.
+#
+# EINZELNE AUSNAHME ERLAUBEN
+# Soll ein Treffer bewusst stehen bleiben — etwa eine Adresse, die in einen Text
+# gehoert —, kommt `jumpstart-ignore` mit Begruendung in dieselbe Zeile:
+#
+#   Die Anleitung liegt unter github.com/name/repo. <!-- jumpstart-ignore: gehoert
+#   in den Startprompt, sonst findet niemand die Anleitung -->
+
+# --- Arbeitgeber Dritter, Kunden und Mandate ---
 # Beispielagentur GmbH
 # =XYZ
 

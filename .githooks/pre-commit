@@ -1,27 +1,43 @@
 #!/bin/sh
 # Jumpstart pre-commit Hook.
 #
-# Einrichtung (einmalig, in der Wurzel des Repos):
+# Einrichtung (einmalig pro Klon, in der Wurzel des Repos):
 #
 #     mkdir -p .githooks
-#     cp <paket>/pre-commit .githooks/pre-commit
+#     cp <hub>/plugins/sb/skills/jumpstart/templates/pre-commit .githooks/pre-commit
 #     chmod +x .githooks/pre-commit
 #     git config core.hooksPath .githooks
 #
-# Danach laeuft die Pruefung vor jedem Commit. Der Ordner .githooks ist
-# versioniert, der Hook wandert also mit — nur der eine config-Befehl muss
-# pro Klon einmal ausgefuehrt werden.
+# Der Ordner .githooks ist versioniert, der Hook wandert also mit — nur der
+# config-Befehl muss pro Klon einmal laufen. Ohne ihn ist der Hook INAKTIV,
+# ohne dass irgendetwas warnt.
 #
-# Beide Pruefungen laufen im --staged-Modus: geprueft wird, was tatsaechlich
-# committet wird. Ein unfertiger Entwurf im Arbeitsverzeichnis blockiert damit
-# nicht den Commit.
+# Selbsttest nach der Einrichtung: eine Datei mit einem Namen aus der eigenen
+# Entitaetenliste anlegen und committen wollen — der Commit MUSS abbrechen.
+#
+# Geprueft wird der Inhalt aus dem Git-Index, nicht der aus dem Arbeitsverzeichnis.
 #
 # Bewusst uebergehen (nur mit gutem Grund):  git commit --no-verify
 
 set -e
 
+# Python finden. Ohne Interpreter wird NICHT stillschweigend durchgewunken.
+PY=""
+for c in python3 python py; do
+  if command -v "$c" >/dev/null 2>&1; then PY="$c"; break; fi
+done
+
+if [ -z "$PY" ]; then
+  echo ""
+  echo "Commit abgebrochen: Python 3 wurde nicht gefunden."
+  echo "Die Pruefungen konnten deshalb NICHT laufen — das ist kein Treffer,"
+  echo "sondern eine fehlende Voraussetzung. Python 3 installieren, oder den"
+  echo "Commit bewusst mit --no-verify durchfuehren."
+  exit 1
+fi
+
 if [ -f _meta/check_privacy.py ]; then
-  if ! python3 _meta/check_privacy.py --staged; then
+  if ! "$PY" _meta/check_privacy.py --staged; then
     echo ""
     echo "Commit abgebrochen: Die Datenschutzpruefung hat angeschlagen."
     echo "Treffer entfernen oder abstrahieren, dann erneut committen."
@@ -30,7 +46,7 @@ if [ -f _meta/check_privacy.py ]; then
 fi
 
 if [ -f _meta/check_okf.py ]; then
-  if ! python3 _meta/check_okf.py --staged; then
+  if ! "$PY" _meta/check_okf.py --staged; then
     echo ""
     echo "Commit abgebrochen: Die Formatpruefung hat harte Verstoesse gefunden."
     exit 1

@@ -9,5 +9,6 @@
       "source": "./plugins/sb",
       "description": "Persönliche Wissensbasis mit Claude aufbauen und pflegen."
     }
-  ]
+  ],
+  "description": "Bauplan zum Einrichten einer persönlichen Wissensbasis mit Claude."
 }

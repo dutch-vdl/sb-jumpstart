@@ -23,6 +23,7 @@ Geprueft wird:
   HART   `index.md` ausserhalb der Wurzel mit Frontmatter
   HART   Wurzel-`index.md` ohne `version`
   HART   `version` in der Wurzel-`index.md` weicht vom juengsten log.md-Eintrag ab
+  HART   nicht aufgeloeste Merge-Konfliktmarker in einer Datei
 
   WEICH  toter bundle-relativer Link (Ziel existiert nicht)
   WEICH  Concept ohne `timestamp`
@@ -42,6 +43,10 @@ EXEMPT_FILES = {"CLAUDE.md", "README.md", "log.md"}
 FM_DELIM = "---"
 LINK_RE = re.compile(r"\[[^\]]*\]\((/[^)]+)\)")
 LOG_HEADING_RE = re.compile(r"^##\s+\d{4}-\d{2}-\d{2}\s+[—-]\s+v(\d+\.\d+\.\d+)\s*$")
+
+# Nicht aufgeloeste Merge-Konfliktmarker. Sie passieren sonst jede Pruefung und
+# landen unbemerkt in der Historie — bei zwei Geraeten der wahrscheinlichste Unfall.
+CONFLICT_RE = re.compile(r"^(<{7}|={7}|>{7})(\s|$)", re.M)
 
 hard = []
 soft = []
@@ -88,6 +93,19 @@ def check_links(root, relpath, text):
         if os.path.exists(candidate) or os.path.exists(candidate.rstrip("/")):
             continue
         soft.append(f"{relpath}: toter Link -> {target}")
+
+
+def index_content(path):
+    """Inhalt aus dem Git-Index statt vom Datentraeger.
+
+    Sicherheitsrelevant: Wird eine Datei gestaged und danach im Arbeitsverzeichnis
+    veraendert, pruefte die alte Fassung die falsche Version.
+    """
+    try:
+        out = subprocess.run(["git", "show", f":{path}"], capture_output=True, check=True)
+        return out.stdout.decode("utf-8", errors="replace")
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return None
 
 
 def staged_markdown():
@@ -139,11 +157,21 @@ def main():
         full = os.path.join(root, rel)
         is_root_level = os.path.dirname(rel) == ""
 
-        try:
-            with open(full, encoding="utf-8") as fh:
-                text = fh.read()
-        except OSError as exc:
-            hard.append(f"{rel}: nicht lesbar ({exc})")
+        if staged_only:
+            text = index_content(rel)
+            if text is None:
+                hard.append(f"{rel}: nicht aus dem Index lesbar.")
+                continue
+        else:
+            try:
+                with open(full, encoding="utf-8") as fh:
+                    text = fh.read()
+            except OSError as exc:
+                hard.append(f"{rel}: nicht lesbar ({exc})")
+                continue
+
+        if CONFLICT_RE.search(text):
+            hard.append(f"{rel}: nicht aufgeloeste Merge-Konfliktmarker.")
             continue
 
         check_links(root, rel, text)

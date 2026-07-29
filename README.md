@@ -29,14 +29,18 @@ Cowork-Aufgabe und füge über „Ordner hinzufügen" deinen Ordner `Knowledge H
 > öffentlich auf GitHub unter `github.com/dutch-vdl/sb-jumpstart`. <!-- jumpstart-ignore: Repo-Adresse gehört in den Startprompt, sonst findet niemand die Anleitung -->
 >
 > Lies dort bitte zuerst `README.md`, dann `docs/tracks.md` und danach die vollständige
-> Anleitung unter `plugins/sb/skills/jumpstart/setup-guide.md`. Die Vorlagen, die du
-> brauchst, liegen im selben Ordner unter `templates/`.
+> Anleitung unter `plugins/sb/skills/jumpstart/setup-guide.md`. Im selben Ordner liegen
+> `user-readme.md` (die Erklärung für mich) und die Vorlagen unter `templates/`.
 >
 > Richte mich anschließend nach dieser Anleitung ein. Der Ordner `Knowledge Hub` ist
 > bereits mit dieser Sitzung verbunden.
 
-Das war's. Claude führt dich durch ein kurzes Interview und baut die Struktur mit dir
-zusammen auf. Du musst vorher nichts entscheiden und nichts installieren.
+Das war's. Claude führt dich durch ein Interview und baut die Struktur mit dir zusammen
+auf. Du musst vorher nichts entscheiden und nichts installieren.
+
+**Zeitrahmen:** Interview und Grundgerüst rund eine halbe Stunde. Danach kommt das Aufnehmen
+von vorhandenem Material — das dauert so lange, wie du Material mitbringst, und muss nicht
+am selben Tag passieren.
 
 **Wenn du zwischendurch aufhören musst:** kein Problem. Sag beim nächsten Mal einfach
 „lass uns mein Setup weiterbauen" — Claude erkennt am angelegten Stand, wo ihr wart.

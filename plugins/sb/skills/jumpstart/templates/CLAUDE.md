@@ -156,6 +156,9 @@ gewachsen ist (Richtwert: ab etwa zwanzig Concepts oder nach einigen Wochen Nutz
 
 ## Herkunft
 
-Diese Basis wurde mit dem SB Jumpstart aufgesetzt. Version und Pfad stehen im
-Frontmatter der Wurzel-`index.md` (`setup_version`, `setup_track`). Bei einer neuen Fassung
-des Setups prüft der Upgrade-Skill die Differenz und legt sie zur Freigabe vor.
+Diese Basis wurde mit dem SB Jumpstart aufgesetzt. Drei Felder im Frontmatter der
+Wurzel-`index.md` halten das fest: `setup_version` (welche Fassung), `setup_track` (welche
+Ausbaustufe) und `setup_source` (woher — die Adresse, unter der neue Fassungen liegen).
+
+Bei einer neuen Fassung prüft der Upgrade-Skill die Differenz gegen diese Quelle und legt
+sie zur Freigabe vor. Ohne `setup_source` findet er nichts; das Feld ist kein Schmuck.

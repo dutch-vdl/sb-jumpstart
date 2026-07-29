@@ -17,8 +17,8 @@ Sag Claude in einer Sitzung mit verbundenem Wissens-Ordner:
 
 Was dann passiert:
 
-1. Claude liest, auf welcher Fassung du stehst — das steht im Kopf deiner `index.md` als
-   `setup_version`.
+1. Claude liest, auf welcher Fassung du stehst und woher Aktualisierungen kommen — beides
+   steht im Kopf deiner `index.md` als `setup_version` und `setup_source`.
 2. Claude liest, was seither dazugekommen ist, und blendet aus, was nur andere
    Ausbaustufen betrifft.
 3. Du bekommst eine Liste, sortiert nach **empfohlen**, **optional** und **betrifft dich

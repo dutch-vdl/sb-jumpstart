@@ -22,9 +22,10 @@ Dein Wissen liegt in einem ganz normalen Ordner. Kein Zusatzwerkzeug, keine Inst
 und ein Änderungstagebuch — das ist eine Zeile Text pro Sicherung und der Grund, warum du
 später mühelos aufsteigen kannst, wenn du willst.
 
-**Aktualisierungen:** Du bekommst eine Mail, wenn es eine neue Fassung gibt, lädst das
-Paket herunter und sagst Claude „prüf mein Setup gegen den neuen Stand". Claude zeigt dir,
-was sich geändert hat, und arbeitet es nach deiner Freigabe ein.
+**Aktualisierungen:** Du bekommst eine Mail, wenn es eine neue Fassung gibt, und sagst
+Claude „prüf mein Setup gegen den neuen Stand". Claude holt sich den neuen Stand selbst von
+der Adresse, die in deiner Wissensbasis vermerkt ist, zeigt dir was sich geändert hat und
+arbeitet es nach deiner Freigabe ein. Herunterladen musst du nichts.
 
 **Was du dafür brauchst:** einen Claude-Zugang, am besten die Desktop-App, und einen
 leeren Ordner. Sonst nichts. Einen GitHub-Account brauchst du nur, wenn du über neue
@@ -47,10 +48,12 @@ zutraust.
 Dein Wissen liegt in einem eigenen Repository. Damit arbeitest du am Laptop weiter, was du
 am Rechner begonnen hast, und jede Änderung ist nachvollziehbar. Der Preis dafür ist eine
 Handvoll neuer Handgriffe: pullen vor der Arbeit, sichern nach der Arbeit, pushen mit einem
-Klick. Claude übernimmt davon alles außer dem Push — der bleibt bewusst bei dir, damit
-keine Zugangsdaten in einer KI-Umgebung landen.
+Klick. **Holen und Hochladen bleiben bewusst bei dir** — beides braucht deine
+Zugangsdaten, und die sollen nicht in einer KI-Umgebung liegen. Alles dazwischen übernimmt
+Claude.
 
-**Aktualisierungen:** wie bei Stufe 1 — Mail, Paket, Upgrade-Skill.
+**Aktualisierungen:** wie bei Stufe 1 — Mail, dann „prüf mein Setup gegen den neuen
+Stand".
 
 **Was du dafür brauchst:** zusätzlich einen GitHub-Account und ein Git-Programm auf jedem
 Gerät. Empfohlen: **GitHub Desktop** — es ist auf Klicken ausgelegt statt auf Befehle und

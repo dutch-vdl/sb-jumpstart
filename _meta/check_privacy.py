@@ -5,7 +5,9 @@ Datenschutzpruefung: findet Namen und Muster, die nicht nach draussen duerfen.
 Aufruf aus der Wurzel der Wissensbasis bzw. des Repos:
 
     python3 _meta/check_privacy.py              # gesamten Bestand pruefen
-    python3 _meta/check_privacy.py --staged     # nur die zum Commit vorgemerkten Dateien
+    python3 _meta/check_privacy.py --staged     # nur die vorgemerkten Dateien, Inhalt
+                                                # aus dem Index statt vom Datentraeger
+                                                # (Inhalt aus dem Index, nicht vom Datentraeger)
     python3 _meta/check_privacy.py --list       # geladene Eintraege anzeigen, nichts pruefen
 
 Nur Standardbibliothek — keine Installation noetig.
@@ -62,7 +64,7 @@ TEXT_SUFFIXES = {".md", ".txt", ".yml", ".yaml", ".json", ".py", ".sh", ".toml",
 # Generische Muster — greifen auch ohne Entitaetenliste.
 GENERIC = [
     ("Mailadresse", re.compile(r"\b[\w.+-]+@[\w-]+\.[A-Za-z]{2,}\b")),
-    ("Lokaler Benutzerpfad", re.compile(r"(/Users/|/home/|C:\\\\Users\\\\)[A-Za-z0-9._-]+")),
+    ("Lokaler Benutzerpfad", re.compile(r"(/Users/|/home/|[A-Za-z]:[\\\\/]+Users[\\\\/]+)[A-Za-z0-9._-]+")),
     ("Betrag mit Waehrung", re.compile(r"(\d[\d.,]*\s?(?:€|EUR|\$|USD|CHF)|(?:€|EUR|\$|USD|CHF)\s?\d[\d.,]*)")),
     ("IBAN", re.compile(r"\b[A-Z]{2}\d{2}[A-Z0-9]{10,30}\b")),
     ("Telefonnummer", re.compile(r"(?<![\w.-])\+\d{2}[\s/-]?\(?\d{2,5}\)?[\s/-]?\d{3,}[\s\d/-]*")),
@@ -161,12 +163,30 @@ def in_skipped_dir(path):
     return any(part in SKIP_DIRS for part in path.replace("\\", "/").split("/"))
 
 
-def scan(paths, entities):
+def index_content(path):
+    """Inhalt aus dem Git-Index lesen — nicht vom Datentraeger.
+
+    Der Unterschied ist sicherheitsrelevant: Wird eine Datei mit einem
+    schuetzenswerten Namen gestaged und danach im Arbeitsverzeichnis bereinigt,
+    pruefte die alte Fassung die bereinigte Version und liess die unbereinigte
+    committen. Genau der Pfad, den der Hook absichern soll.
+    """
+    try:
+        out = subprocess.run(["git", "show", f":{path}"],
+                             capture_output=True, check=True)
+        return out.stdout.decode("utf-8", errors="replace")
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return None
+
+
+def scan(paths, entities, from_index=False):
     hits = []
     checks = entities + GENERIC
     for path in paths:
         base = os.path.basename(path)
-        if base in SKIP_FILES or not os.path.isfile(path) or not is_text(path):
+        if base in SKIP_FILES or not is_text(path):
+            continue
+        if not from_index and not os.path.isfile(path):
             continue
         if in_skipped_dir(path):
             continue
@@ -176,17 +196,26 @@ def scan(paths, entities):
             if pattern.search(path):
                 hits.append((path, 0, label, path))
 
-        try:
-            with open(path, encoding="utf-8", errors="replace") as fh:
-                for number, line in enumerate(fh, start=1):
-                    if IGNORE_TOKEN in line:
-                        continue
-                    for label, pattern in checks:
-                        match = pattern.search(line)
-                        if match:
-                            hits.append((path, number, label, match.group(0).strip()[:60]))
-        except OSError as exc:
-            print(f"HINWEIS  {path}: nicht lesbar ({exc})")
+        if from_index:
+            text = index_content(path)
+            if text is None:
+                print(f"HINWEIS  {path}: nicht aus dem Index lesbar.")
+                continue
+        else:
+            try:
+                with open(path, encoding="utf-8", errors="replace") as fh:
+                    text = fh.read()
+            except OSError as exc:
+                print(f"HINWEIS  {path}: nicht lesbar ({exc})")
+                continue
+
+        for number, line in enumerate(text.splitlines(), start=1):
+            if IGNORE_TOKEN in line:
+                continue
+            for label, pattern in checks:
+                match = pattern.search(line)
+                if match:
+                    hits.append((path, number, label, match.group(0).strip()[:60]))
     return hits
 
 
@@ -211,7 +240,8 @@ def main():
         print("Nichts zu pruefen.")
         sys.exit(0)
 
-    hits = scan(paths, entities) if entities or not errors else []
+    staged = "--staged" in args
+    hits = scan(paths, entities, from_index=staged) if entities or not errors else []
 
     seen = set()
     for path, number, label, snippet in hits:

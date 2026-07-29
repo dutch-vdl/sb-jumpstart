@@ -1,5 +1,5 @@
-# Beim Anlegen als .gitignore in die Wurzel des Wissensbestands kopieren.
-# Nur für Stufe 2 und 3 relevant.
+# Beim Anlegen als .gitignore in die Wurzel des Wissensbestands kopieren und
+# diese beiden Hinweiszeilen entfernen. Nur für Stufe 2 und 3 relevant.
 
 .DS_Store
 Thumbs.db
