@@ -1,0 +1,8 @@
+.DS_Store
+Thumbs.db
+*.tmp
+__pycache__/
+
+# Die Entitätenliste der Datenschutzprüfung ist selbst das Leck, das sie
+# verhindern soll — sie darf niemals eingecheckt werden:
+_meta/privacy-entities.txt

@@ -1,0 +1,13 @@
+{
+  "name": "sb-jumpstart",
+  "owner": {
+    "name": "SB Jumpstart"
+  },
+  "plugins": [
+    {
+      "name": "sb",
+      "source": "./plugins/sb",
+      "description": "Persönliche Wissensbasis mit Claude aufbauen und pflegen."
+    }
+  ]
+}

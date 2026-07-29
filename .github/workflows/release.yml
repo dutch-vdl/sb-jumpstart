@@ -1,0 +1,83 @@
+name: Release aus VERSION
+
+# Setzt beim Push auf den Hauptbranch das Tag vX.Y.Z aus der Datei VERSION und
+# erzeugt daraus einen GitHub-Release, dessen Beschreibung der zugehoerige
+# CHANGELOG-Abschnitt ist.
+#
+# Warum ein Release und nicht nur ein Tag: Die Benachrichtigung, die Anwender
+# abonnieren ("Watch -> Custom -> Releases"), haengt am Release. Ein reines Tag
+# erzeugt keine Mail — an dieser Stelle bricht die Kette sonst still.
+#
+# Laeuft idempotent: existiert das Tag bereits, passiert nichts.
+
+on:
+  push:
+    branches: [main]
+    paths: ['VERSION']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - name: Version lesen und Konsistenz pruefen
+        id: v
+        run: |
+          V=$(tr -d ' \t\n\r' < VERSION)
+          if [ -z "$V" ]; then echo "VERSION ist leer."; exit 1; fi
+          echo "version=$V" >> "$GITHUB_OUTPUT"
+          python3 _meta/check_release.py
+
+      - name: Changelog-Abschnitt extrahieren
+        id: notes
+        run: |
+          V="${{ steps.v.outputs.version }}"
+          python3 - "$V" <<'PY' > release-notes.md
+          import re, sys
+          version = sys.argv[1]
+          text = open("CHANGELOG.md", encoding="utf-8").read()
+          pattern = re.compile(r"^##\s+v" + re.escape(version) + r"\s+—.*$", re.M)
+          m = pattern.search(text)
+          if not m:
+              print(f"Kein Changelog-Abschnitt fuer v{version} gefunden.")
+              raise SystemExit(0)
+          start = m.end()
+          nxt = re.compile(r"^##\s+v\d+\.\d+\.\d+\s+—", re.M).search(text, start)
+          print(text[start:nxt.start() if nxt else len(text)].strip())
+          PY
+
+      - name: Tag erzeugen, falls neu
+        run: |
+          V="${{ steps.v.outputs.version }}"
+          if git rev-parse -q --verify "refs/tags/v$V" >/dev/null; then
+            echo "Tag v$V existiert bereits - uebersprungen."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git tag "v$V"
+            git push origin "v$V"
+            echo "Tag v$V gesetzt."
+          fi
+
+      # Bewusst getrennt vom Tag-Schritt: Wird ein Tag lokal gesetzt und
+      # mitgepusht, existiert es hier bereits — der Release darf trotzdem
+      # entstehen. Sonst bliebe die Benachrichtigung bei den Anwendern aus,
+      # ohne dass irgendetwas fehlschlaegt.
+      - name: Release erzeugen, falls noch keiner existiert
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          V="${{ steps.v.outputs.version }}"
+          if gh release view "v$V" >/dev/null 2>&1; then
+            echo "Release v$V existiert bereits - nichts zu tun."
+            exit 0
+          fi
+          gh release create "v$V" --title "v$V" --notes-file release-notes.md
+          echo "Release v$V erzeugt."

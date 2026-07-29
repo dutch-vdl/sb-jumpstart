@@ -1,0 +1,40 @@
+#!/bin/sh
+# Jumpstart pre-commit Hook.
+#
+# Einrichtung (einmalig, in der Wurzel des Repos):
+#
+#     mkdir -p .githooks
+#     cp <paket>/pre-commit .githooks/pre-commit
+#     chmod +x .githooks/pre-commit
+#     git config core.hooksPath .githooks
+#
+# Danach laeuft die Pruefung vor jedem Commit. Der Ordner .githooks ist
+# versioniert, der Hook wandert also mit — nur der eine config-Befehl muss
+# pro Klon einmal ausgefuehrt werden.
+#
+# Beide Pruefungen laufen im --staged-Modus: geprueft wird, was tatsaechlich
+# committet wird. Ein unfertiger Entwurf im Arbeitsverzeichnis blockiert damit
+# nicht den Commit.
+#
+# Bewusst uebergehen (nur mit gutem Grund):  git commit --no-verify
+
+set -e
+
+if [ -f _meta/check_privacy.py ]; then
+  if ! python3 _meta/check_privacy.py --staged; then
+    echo ""
+    echo "Commit abgebrochen: Die Datenschutzpruefung hat angeschlagen."
+    echo "Treffer entfernen oder abstrahieren, dann erneut committen."
+    exit 1
+  fi
+fi
+
+if [ -f _meta/check_okf.py ]; then
+  if ! python3 _meta/check_okf.py --staged; then
+    echo ""
+    echo "Commit abgebrochen: Die Formatpruefung hat harte Verstoesse gefunden."
+    exit 1
+  fi
+fi
+
+exit 0

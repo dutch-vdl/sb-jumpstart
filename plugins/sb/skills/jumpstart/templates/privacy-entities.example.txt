@@ -1,0 +1,30 @@
+# Entitaetenliste fuer check_privacy.py
+#
+# Diese Datei als _meta/privacy-entities.txt anlegen UND in die .gitignore
+# eintragen. Sie darf niemals eingecheckt werden — sie ist selbst das Leck,
+# das sie verhindern soll.
+#
+# Format, eine Angabe pro Zeile:
+#   Beispielkunde GmbH   wortweise Suche, Gross-/Kleinschreibung egal
+#   =ABC                 exakte Schreibweise mit Wortgrenzen (verhindert
+#                        Treffer auf Kleinschreibung und auf Wortbestandteile)
+#   re:PRJ-\d{4}         regulaerer Ausdruck
+#   # Zeile mit Raute    Kommentar
+
+# --- Arbeitgeber und Stationen ---
+# Beispielagentur GmbH
+# =XYZ
+
+# --- Kunden und Mandate ---
+# Beispielkunde AG
+# Beispielprodukt
+
+# --- Personen (eigene Kontakte, Kollegen, Kundenkontakte) ---
+# Vorname Nachname
+
+# --- Geraete, Hosts, Repositories ---
+# meingeraet
+# meinbenutzername/mein-repo
+
+# --- Projektkennungen ---
+# re:PRJ-\d{4}

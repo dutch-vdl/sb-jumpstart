@@ -1,0 +1,41 @@
+# Beim Anlegen nach .github/workflows/auto-tag.yml kopieren. Nur Stufe 2 und 3.
+#
+# Setzt bei jedem Push auf den Hauptbranch automatisch das Tag vX.Y.Z aus dem
+# version-Feld der Wurzel-index.md, falls es noch nicht existiert.
+# Zweck: Tag-Vergabe writer-unabhaengig machen — die Regel "Version ist gleich
+# getaggter Commit" gilt damit unabhaengig davon, wer committet. Lokal wird
+# nicht getaggt.
+#
+# Heisst der Hauptbranch nicht "main", den Namen unten anpassen.
+
+name: Auto-Tag Version
+
+on:
+  push:
+    branches: [main]
+    paths: ['index.md']
+
+permissions:
+  contents: write
+
+jobs:
+  tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+      - name: Version aus index.md taggen, falls neu
+        run: |
+          V=$(grep -m1 '^version:' index.md | sed -E 's/version: *"?([^"]*)"?.*/\1/')
+          if [ -z "$V" ]; then echo "Kein version-Feld gefunden - nichts zu tun."; exit 0; fi
+          if git rev-parse -q --verify "refs/tags/v$V" >/dev/null; then
+            echo "Tag v$V existiert bereits - nichts zu tun."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git tag "v$V"
+            git push origin "v$V"
+            echo "Tag v$V gesetzt."
+          fi

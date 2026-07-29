@@ -1,0 +1,8 @@
+{
+  "name": "sb",
+  "description": "Persönliche Wissensbasis mit Claude aufbauen und pflegen: Einrichtung, Dokument-Destillat, externe Quellen, Wochendurchlauf, Sichern, Setup-Upgrade.",
+  "version": "0.1.0",
+  "author": {
+    "name": "SB Jumpstart"
+  }
+}
