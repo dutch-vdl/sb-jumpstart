@@ -167,7 +167,33 @@ verschweigen. Sag es der Person einmal klar, statt es zu umgehen.
 
 ## Phase 0 — Orientierung geben
 
-Bevor das Interview beginnt: Die Datei `user-readme.md` liegt neben dieser Anleitung im
+### 0.1 Ablageort verifizieren — vor allem anderen
+
+**Erster Schritt, ohne Ausnahme, noch vor der Orientierung.** Der Startprompt setzt voraus,
+dass der richtige Ordner verbunden ist. Ist er es nicht, entsteht die Wissensbasis lautlos
+am falschen Ort — im ungünstigsten Fall in einem fremden Repository, das versioniert und
+gepusht wird. Das ist der wahrscheinlichste Bedienfehler beim Erstkontakt.
+
+Liste die verbundenen Ordner auf und ordne jeden einer der drei Lagen zu:
+
+* **Leerer Ordner** (oder nur `.DS_Store`, `.git` ohne Inhalt) → Kandidat für einen
+  Neuaufbau.
+* **Bestehende Wissensbasis** — erkennbar an einer Wurzel-`index.md` mit `setup_track` im
+  Frontmatter → Kandidat für den Wiedereinstieg (siehe unten).
+* **Etwas anderes** — ein Code-Repository, ein Dokumentenordner, das Jumpstart-Repository
+  selbst → **niemals** Ziel eines Aufbaus.
+
+Ist genau ein Kandidat vorhanden, nenne ihn und lass ihn bestätigen. Bei mehreren
+Kandidaten frag, welcher gemeint ist. Trifft keine der ersten beiden Lagen zu, **halte an
+und frag nach** — rate nicht, und lege unter keinen Umständen ungefragt los. Ein falsch
+angelegter Bestand fällt oft erst auf, wenn er schon in einer fremden Historie steht.
+
+Ist überhaupt kein passender Ordner verbunden, ist das kein Abbruch: Die Person sagt
+einfach, welchen Ordner sie meint, und du forderst ihn an. Das geht in laufender Sitzung.
+
+### 0.2 Orientierung
+
+Die Datei `user-readme.md` liegt neben dieser Anleitung im
 selben Ordner — lies sie und zeige der Person **zu
 Beginn** deren Inhalt oder eine kurze Zusammenfassung mit Verweis auf die Datei, damit sie
 versteht, was gleich entsteht. Viele Nutzer sind neu im Umgang mit einem Second Brain und
@@ -251,9 +277,15 @@ Stufe 1.
 **Prüfe die Voraussetzungen, bevor die Stufe feststeht — nicht danach.** Frage konkret
 nach und verlasse dich nicht auf Vermutungen:
 
+* Für **Stufe 1**: nichts. Frag insbesondere **nicht** nach Python — die Prüfskripte laufen
+  dort, wo du auf den Ordner zugreifst, nicht auf dem Rechner der Person. Probier sie
+  einfach aus. Die Frage erzeugt sonst eine Hürde, die es gar nicht gibt, und liefert ein
+  falsches Argument für die kleinere Stufe.
 * Für **Stufe 2**: Gibt es einen GitHub-Account? Ist ein Git-Programm installiert
   (empfiehl **GitHub Desktop** namentlich — es bringt Git mit und ist auf Klicken ausgelegt)?
-  Ist Python 3 vorhanden? Prüfe das, wenn du kannst, statt zu fragen.
+  **Ist Python 3 auf dem Gerät vorhanden?** Diese Frage ist hier berechtigt, anders als bei
+  Stufe 1: Der `pre-commit`-Hook läuft auf dem Gerät der Person, nicht in deiner Umgebung.
+  Ohne Interpreter blockiert er jeden Commit — bewusst, aber unerwartet.
 * Für **Stufe 3**: zusätzlich die Bereitschaft, die Plugin-Quelle einzurichten.
 
 Fehlt etwas, ist das **kein Fehler, sondern ein Argument für die kleinere Stufe**. Sag das
@@ -297,6 +329,10 @@ persönliche No-Gos — Formulierungen, Formatierungen, Themen —, die von Anfa
 Zusammenarbeitsregeln gehören? Frage konkret nach: „Was nervt dich an KI-Antworten?"
 liefert bessere Regeln als „welchen Ton möchtest du?".
 
+**Das ist der Rohstoff für das Zusammenarbeits-Profil**, das in Phase 2 als Datei angelegt
+und in Phase 3 gefüllt wird. Notiere die Antworten wörtlich genug, dass daraus Regeln
+werden können — „keine Aufzählungen in Fließtexten" ist eine Regel, „lieber sachlich" nicht.
+
 ### 1.7 Skill-Bedarf (Kandidaten sammeln, nichts festzurren)
 
 Gibt es wiederkehrende Aufgaben, bei denen Claude künftig nach festem Ablauf unterstützen
@@ -334,11 +370,28 @@ Knowledge Hub/
 │   ├── check_privacy.py   ← Datenschutzprüfung
 │   └── privacy-entities.txt ← eigene Namen, NIEMALS versioniert
 ├── <bereich-1>/           ← z. B. professional/, mit eigener index.md
+│   └── profile/
+│       └── zusammenarbeit.md  ← Zusammenarbeits-Profil, Pflicht (Phase 3)
 ├── <bereich-2>/           ← z. B. personal/
+├── _zu-loeschen/          ← Ausgangskorb, nicht versioniert (Claude kann nicht löschen)
 └── workspace/             ← operative Schicht, nicht versioniert
     ├── README.md          ← Workspace-Regeln
     └── TASKS.md           ← offene Punkte, Zusagen, Wiedervorlagen
 ```
+
+**`zusammenarbeit.md` ist keine Kür.** Die `CLAUDE.md` macht es zur Pflichtlektüre vor der
+ersten inhaltlichen Aktion, und die Lern-Mechanik „Selbstlernen nach Korrektur" schreibt
+dorthin. Ohne die Datei zeigen beide ins Leere, und zwar unbemerkt. Lege sie in Phase 2 leer
+mit Frontmatter an (`type: Profile`, `title: Zusammenarbeit mit Claude`, `tags: [profil,
+zusammenarbeit]`) und fülle sie in Phase 3 aus den Antworten von Interview 1.6. Der Pfad
+gehört namentlich in die `CLAUDE.md` — nicht als „sobald vorhanden".
+
+**Anlegen, was gefüllt wird — nicht mehr.** Ein Strang entsteht erst, wenn im Interview ein
+konkreter Inhalt dafür genannt wurde. Wer nur beruflich dokumentieren will, bekommt keinen
+leeren `personal/`-Strang mit Platzhalter-Index; das ist genau der Fehler, vor dem die
+Grundhaltung warnt („lieber drei gefüllte Dokumente als dreißig leere"). Nicht gewählte
+Stränge kommen als Zeile in den Abschnitt „Ausbaustufen" der `CLAUDE.md` und lassen sich
+jederzeit nachziehen.
 
 Ab **Stufe 2** kommt hinzu: `git init -b main` — **der Hauptbranch muss `main` heißen**,
 weil der mitgelieferte Auto-Tag-Workflow darauf horcht; ältere Git-Fassungen legen sonst
@@ -352,16 +405,35 @@ an geführt.
 
 Die **Entitätenliste** `_meta/privacy-entities.txt` wird beim Aufsetzen gemeinsam mit der
 Person befüllt: **Kunden, Mandate, Produktnamen, Personen Dritter, Projektkennungen** und
-technische Bezeichner wie Gerätenamen oder Repository-Adressen.
+technische Bezeichner wie Gerätenamen. Sie steht bei Stufe 2 und 3 in der `.gitignore` und
+darf unter keinen Umständen versioniert werden — sie ist selbst genau das Leck, das sie
+verhindern soll.
 
-**Was ausdrücklich NICHT hineingehört: die Person selbst und ihr eigener Arbeitgeber.**
-Beide stehen zwangsläufig in der eigenen Wissensbasis — im Profil, in den Karrierestationen,
-im Kopf der `CLAUDE.md`. Stünden sie auf der Liste, schlüge die Prüfung bei jeder Sicherung
-gegen Dateien an, die das Setup selbst angelegt hat. Sie sind Karrierekontext, nicht
-Schutzgegenstand. Wer eine Ausnahme braucht — etwa eine Adresse, die bewusst in einem Text
-stehen soll —, schreibt `jumpstart-ignore` mit Begründung in dieselbe Zeile. Sie steht bei Stufe 2 und 3 in der `.gitignore` und darf unter keinen
-Umständen versioniert werden — sie ist selbst genau das Leck, das sie verhindern soll. Beim
-Aufsetzen genügt ein Startbestand; die Liste wächst im Weekly Review mit.
+Drei Dinge dazu sind nicht verhandelbar:
+
+**Die eigene Person gehört nicht hinein.** Ihr Name steht zwangsläufig in der eigenen
+Wissensbasis — im Profil, in den Karrierestationen, im Kopf der `CLAUDE.md`. Als Sperre
+schlüge er bei jeder Sicherung gegen Dateien an, die das Setup selbst angelegt hat. Er ist
+Karrierekontext, kein Schutzgegenstand. Dasselbe gilt für die Adresse der eigenen
+Wissensbasis: Sie steht als `setup_source` im Kopf und gehört deshalb nicht auf die Liste.
+
+**Der eigene Arbeitgeber gehört als Klärungsfall hinein, mit vorangestelltem `?`.** Als
+Sperre erzeugte er dasselbe Problem wie der eigene Name. Sein Material ist aber regelmäßig
+das schutzbedürftigste im ganzen Bestand: interne Strategie, Sprechregeln,
+Wettbewerbsbewertungen, Konditionen — alles Treffer auf Prüffrage 4 der Extrakt-Checkliste.
+Ohne Eintrag kann die Prüfung dort strukturell nie anschlagen, und der Schutz für die größte
+zusammenhängende Materialmenge hinge allein an Disziplin. Das `?` löst deshalb **einmal pro
+Datei** eine Rückfrage aus statt einer Sperre; beantwortet wird sie mit dem Vermerk
+`jumpstart-checked: <Begründung>` in der Datei. Erkläre der Person diesen einen Mechanismus
+ausdrücklich — er ist der einzige, der von ihr eine Antwort verlangt.
+
+**Platzhalter sind ein Fehler, kein Startzustand.** Die Beispieleinträge der mitgelieferten
+Vorlage kennt das Prüfskript; überlebt einer davon, bricht die Prüfung ab. Der Grund: Eine
+Liste aus Platzhaltern meldet „Sauber", ohne einen einzigen echten Namen geprüft zu haben.
+Fülle die Liste deshalb mit echten Einträgen, **bevor** das erste echte Material aufgenommen
+wird — nicht danach. Fällt der Person beim Aufsetzen nichts ein, ist das kein Grund
+weiterzugehen: Frag nach den letzten drei Projekten und den letzten drei Ansprechpartnern.
+Die Liste wächst danach im Weekly Review mit.
 
 Beide Prüfskripte gehören **in allen drei Stufen** dazu. Erwähne es beim
 Anlegen nur beiläufig — ein Anfänger muss es nicht verstehen. Scharf geschaltet wird es
@@ -458,7 +530,7 @@ Ihr Frontmatter trägt vier Felder, die zusammengehören:
 ---
 okf_version: "0.1"
 version: "1.0.0"          # Reife der eigenen Wissensbasis
-setup_version: "0.2.0"    # Version dieses Setups, aus der die Basis entstand
+setup_version: "0.3.0"    # Version dieses Setups, aus der die Basis entstand
 setup_source: "https://github.com/dutch-vdl/sb-jumpstart"   # woher Aktualisierungen kommen
 setup_track: "lokal"      # lokal | verteilt | mitlaufend
 title: Knowledge Hub
@@ -493,7 +565,13 @@ Präfix `asset:/…` — so bleiben sie stabil, egal wo die Library liegt.
 kein Frontmatter-Zwang, freies Schreiben ohne Freigabe-Pflicht. Hier zählt
 Arbeitsgeschwindigkeit. Aber: **Nichts verlässt den Workspace unanonymisiert**, und der
 Workspace ist **Arbeitsstand, kein Archiv** — Verallgemeinerbares wird im Review destilliert
-und in den Wissensbestand gehoben, Erledigtes gelöscht.
+und in den Wissensbestand gehoben, Erledigtes verschwindet.
+
+**Löschen kann Claude nicht.** In verbundenen Ordnern sind `rm` und `rmdir` nicht erlaubt,
+nur Verschieben. „Erledigtes raus" heißt deshalb konkret: nach `_zu-loeschen/` in der Wurzel
+verschieben — der Ordner ist von beiden Prüfungen und von der Versionierung ausgenommen —
+und **berichten, was dorthin gewandert ist**. Das endgültige Löschen macht die Person selbst
+im Dateimanager. Behaupte nie, aufgeräumt zu haben, wenn nur verschoben wurde.
 
 Bewährte Unterstruktur: `TASKS.md`, ein Notizordner für Termine
 (`meetings/JJJJ-MM-TT-thema.md`), je nach Beruf Projekt- oder Vorgangsdateien. Vorlagen
@@ -518,7 +596,9 @@ An die Spitze, mit dem ausdrücklichen Vermerk, dass er im Konfliktfall gewinnt.
 sind der Kern; ergänze die persönlichen Regeln aus dem Interview:
 
 * **Kontext vor Handlung.** Vor der ersten inhaltlichen Aktion einer Session
-  `conventions.md` lesen (und, sobald vorhanden, das Zusammenarbeits-Profil).
+  `conventions.md` **und** das Zusammenarbeits-Profil lesen. Beide werden beim Aufsetzen
+  angelegt; kein „sobald vorhanden" — ein Vorbehalt an dieser Stelle macht die Lücke
+  unsichtbar, falls das Profil doch fehlt.
 * **Vorschlag vor großer Aktion.** Schreibzugriffe auf den Wissensbestand, Massen- oder
   Strukturänderungen erst als Vorschlag vorlegen; zurückgeschrieben wird nur mit
   ausdrücklicher Freigabe.
@@ -611,7 +691,7 @@ erweitere, was die Person braucht:
 | `Insight` | Externe Studien, Marktdaten, Reports. | Kurz, veraltet schnell |
 | `Deliverable` | Markdown-Extrakt eines Originals aus der Asset Library, mit Verweis. | — |
 | `Project` | Ein eigenes Vorhaben. | — |
-| `Profile` | Verdichtetes Profil: Kompetenzen, Arbeitsstil, Zusammenarbeit. | — |
+| `Profile` | Verdichtetes Profil — **zwei Dateien**: Personenprofil (Kompetenzen, Domänen) und Zusammenarbeits-Profil (`profile/zusammenarbeit.md`). | — |
 | `Person` | Eine relevante Person. | — |
 | `Reference` | Meta- oder Nachschlage-Dokument. | — |
 
@@ -689,7 +769,19 @@ substanziell, war er kein Wissensdokument, sondern eine Kopie.
 (worum ging es, welcher Dokumenttyp, welche Rolle, worin der übertragbare Gehalt liegt; bei
 Treffer der kursive Hinweis) · `# Struktur / Gliederung` (Gliederungen sind Methode, kein
 Geheimnis, sie bleiben erhalten) · `# Wiederverwendbare Inhalte` (der Kern, ausformuliert)
-· `# Als Vorlage nutzbar für` · `# Original` (Verweis, Format, Vertraulichkeitsvermerk).
+· `# Tragfähigkeit` (Pflicht) · `# Als Vorlage nutzbar für` · `# Original` (Verweis,
+Format, Vertraulichkeitsvermerk).
+
+**`# Tragfähigkeit` ist Pflicht, auch wenn dort „trägt uneingeschränkt" steht.** Ein Extrakt
+schreibt den Methodenkern aus und verleiht ihm damit die Autorität eines Wissensbestands —
+auch dann, wenn der Kern dünn ist. Ohne festen Ort für diese Einschätzung wächst die Basis
+in die Breite, ohne dass Qualitätsunterschiede sichtbar bleiben. Fakt und Einschätzung
+werden dort getrennt gehalten. Ein leerer Abschnitt ist ein Signal, ein fehlender nicht.
+
+**Sonderfall Dialogverlauf.** Ist das Original ein exportierter Modell-Dialog, sind die
+Runden die Gliederung, die auslösenden Fragen der Methodenkern und die Ergebnistexte das
+Anlassmaterial. Die Rolle ist die des Auftraggebers, nicht die des Autors — das gehört ins
+Frontmatter, damit später niemand den Text für eigene Urheberschaft hält.
 
 ### Elevation-Kaskade
 
@@ -753,12 +845,24 @@ generische Muster: Mailadressen, lokale Benutzerpfade, Beträge mit Währung,
 Kontoverbindungen, Telefonnummern, Zugangs-Token. Geprüft werden Dateiinhalte **und
 Dateinamen**.
 
-Drei Regeln zum Umgang:
+Die Liste kennt zwei Klassen von Einträgen. **Sperren** (ohne Präfix) blockieren die
+Sicherung. **Klärungsfälle** (Präfix `?`) blockieren nicht, sondern lösen einmal pro Datei
+eine Rückfrage aus — gedacht für den eigenen Arbeitgeber, dessen Name im eigenen Bestand
+zwangsläufig vorkommt, dessen Material aber prüfungsbedürftig ist. Beantwortet wird die
+Rückfrage mit `jumpstart-checked: <Begründung>` in der Datei; danach ist sie dauerhaft still.
+
+Fünf Regeln zum Umgang:
 
 * **Die Entitätenliste wird niemals versioniert.** Sie steht in der `.gitignore` und ist
   selbst das Leck, das sie verhindern soll.
+* **Platzhalter sind ein Fehler.** Die Beispieleinträge der Vorlage kennt das Skript und
+  weist sie zurück — eine Liste aus Platzhaltern meldet sonst „Sauber", ohne etwas geprüft
+  zu haben.
 * **Die Liste wächst mit.** Jeder neue Kunde, jedes neue Projekt kommt hinein — der
   passende Moment dafür ist der Konsistenz-Block des Weekly Review.
+* **Beim Arbeitgeberwechsel wird aus dem Klärungsfall eine Sperre**: Das `?` entfällt, die
+  bestehenden Karrierestationen und `resource`-Pfade bekommen `jumpstart-ignore` mit
+  Begründung. Auch das gehört in den Konsistenz-Block.
 * **Treffer werden abstrahiert, nicht weggeklickt.** Wer einen Treffer bewusst freigibt,
   schreibt `jumpstart-ignore` mit einer Begründung daneben. Ohne Begründung ist die
   Freigabe wertlos, weil niemand sie später beurteilen kann.
@@ -942,7 +1046,8 @@ Durchlauf **ersetzt keine Einzelaufnahme**; er sammelt ein, was liegen geblieben
 
 1. **Destillat.** Workspace sichten: Was hat sich als generalisierbar erwiesen?
    Kandidatenliste mit Typ-Vorschlag und Ein-Satz-Begründung; Aufnahme nur mit Freigabe und
-   über die Extrakt-Regel. Danach Workspace straffen.
+   über die Extrakt-Regel. Danach Workspace straffen — Erledigtes nach `_zu-loeschen/`
+   verschieben und berichten, nicht löschen (Claude kann das nicht).
 2. **Aktualität.** Insights am gründlichsten prüfen, gesteuert über den
    Haltbarkeitsvermerk — geprüft wird der verfallende Anteil, nicht das ganze Dokument.
    Learning auf offensichtliche Veralterung, Frameworks in der Regel nicht anfassen.
@@ -994,14 +1099,29 @@ aktualisiert.
 ## Abschluss
 
 Stelle sicher, dass nach Infodump und Routinen-Setup mindestens existieren: ein
-Profil-Dokument (Wer bin ich, was kann ich, wie will ich mit Claude arbeiten — daraus
-wächst das Zusammenarbeits-Dokument) und ein erstes inhaltliches Concept aus der
-tatsächlichen Arbeit der Person. Hat der Infodump das nicht hergegeben, erarbeite beides
-jetzt im Dialog.
+Profil-Dokument (wer bin ich, was kann ich), das **gefüllte Zusammenarbeits-Profil** unter
+`<beruflicher-strang>/profile/zusammenarbeit.md` und ein erstes inhaltliches Concept aus der
+tatsächlichen Arbeit der Person. Hat der Infodump das nicht hergegeben, erarbeite alles drei
+jetzt im Dialog. Die beiden Profile sind **zwei Dateien**, nicht eine: Das eine beschreibt
+die Person, das andere den Umgang mit ihr. Beide tragen `type: Profile`; unterschieden
+werden sie über `title` und `tags`.
+
+**Den Termin für das erste Weekly Review nicht nur nennen, sondern setzen.** Ein Datum im
+Gesprächsprotokoll ist kein Termin. Biete zwei Wege mit Empfehlung an:
+
+* **Geplante Aufgabe** *(Empfehlung, sobald die Basis produktiv genutzt wird)* — ein
+  wöchentlich feuernder Job, der den Durchlauf anstößt. Nach dem Anlegen **einmal manuell
+  auslösen**, damit die Werkzeugfreigaben sitzen und der erste automatische Lauf nicht auf
+  eine Bestätigung wartet.
+* **Eintrag in `workspace/TASKS.md` mit Datum** *(Minimum)* — für Wegwerf- oder
+  Probeaufbauten, bei denen ein wöchentlicher Job nur Lärm wäre.
+
+Ohne eine der beiden Mechaniken etabliert sich die Routine erfahrungsgemäß nicht — und sie
+ist der Unterschied zwischen einer lebendigen Wissensbasis und einem digitalen Dachboden.
 
 Danach die erste Sicherung fahren und den Stand zusammenfassen: was steht, welche
 Ausbaustufen notiert sind, welche Verfahren zur Verfügung stehen und wie man sie aufruft,
-wann das erste Weekly Review ansteht. Sag der Person außerdem,
+wie der Weekly-Review-Termin gesetzt wurde. Sag der Person außerdem,
 **wie sie Aktualisierungen dieses Setups bekommt** — bei Stufe 1 und 2 über die
 Benachrichtigung des Repositories und den Upgrade-Skill, bei Stufe 3 automatisch.
 

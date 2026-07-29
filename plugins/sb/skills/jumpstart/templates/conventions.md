@@ -36,7 +36,7 @@ Untertitel"), in Anführungszeichen setzen — sonst bricht der YAML-Parser.
 | `Insight` | Externes Erkenntnismaterial: Studien, Marktdaten, Reports. Kürzeste Haltbarkeit. |
 | `Deliverable` | Markdown-Extrakt eines Originals aus der Asset Library, plus Verweis darauf. |
 | `Project` | Ein eigenes Vorhaben. |
-| `Profile` | Verdichtetes Profil: Kompetenzen, Arbeitsstil, Zusammenarbeit, Domänen. |
+| `Profile` | Verdichtetes Profil. Zwei Ausprägungen, zwei Dateien: das **Personenprofil** (Kompetenzen, Domänen, Arbeitsstil) und das **Zusammenarbeits-Profil** (`profile/zusammenarbeit.md`, wie Claude arbeiten soll). Unterschieden über `title` und `tags`. |
 | `Person` | Eine relevante Person. |
 | `Reference` | Meta- oder Nachschlage-Dokument. |
 
@@ -75,11 +75,32 @@ beim Verschieben stabil.
 # Asset Library & Deliverables
 
 Große Binärdateien (Präsentationen, PDFs, Bilder) liegen **nicht** im Wissensbestand,
-sondern in einer separaten Asset Library unter <Ort aus Interview 1.5>.
+sondern in einer separaten Asset Library: <Lage relativ zum Hub, z. B. „Nachbarordner
+`Knowledge Asset Library`" oder „Ordner `Assets` im selben Cloud-Verzeichnis">.
+
+**Der Ort wird relativ beschrieben, nie als absoluter Pfad.** Zwei Gründe: Absolute Pfade
+sind gerätespezifisch und auf einem zweiten Gerät falsch, und sie schlagen als „Lokaler
+Benutzerpfad" in der Datenschutzprüfung an — sie enthalten den Benutzernamen. Wer hier einen
+Pfad wie `/Users/…` einträgt, blockiert jede weitere Sicherung, ohne dass die Fehlermeldung
+den Grund nennt. Dieselbe Regel gilt für `resource`-Felder; die verwenden ohnehin `asset:/…`
+relativ zur Library-Wurzel.
 
 **Ordnerschema:** pro Arbeitgeber, Station oder Großprojekt ein Ordner in
 Großbuchstaben-Kürzel; übergreifende Wissenskategorien als Buckets in Kleinschreibung
 (`frameworks/`, `learning/`, `insights/`, `personal/`); `TBD/` für noch Unsortiertes.
+
+**Wenn ein Ordnerkürzel schutzbedürftig wird.** Sprechende Kürzel sind im Alltag praktisch,
+verankern aber einen Namen im `resource`-Feld jedes zugehörigen Concepts. Wird der Name
+später schutzbedürftig — typischerweise nach einem Arbeitgeberwechsel —, ist das kein Fall
+für Handarbeit, sondern ein Ablauf in vier Schritten:
+
+1. Neues, neutrales Kürzel festlegen (Branche plus Jahr statt Marke, etwa `PHARMA-2024`).
+2. Ordner in der Asset Library umbenennen.
+3. **Referenz-Sweep über den gesamten Bestand:** alle `resource`-Felder und alle Fließtext-
+   Verweise auf das alte Kürztel suchen und ersetzen. Der Sweep ist derselbe wie bei einer
+   Datei-Umbenennung, nur auf `resource` ausgedehnt.
+4. Prüfskripte laufen lassen und das Ergebnis melden — ein übersehener Verweis ist ein toter
+   Link, kein stiller Fehler.
 
 **Zwei-Schichten-Prinzip.** Wissensschicht: Jede Originaldatei bekommt ein
 `Deliverable`-Concept — ein Markdown-Extrakt des wiederverwendbaren Inhalts plus Metadaten.
@@ -145,12 +166,32 @@ Unabhängig von Vertraulichkeit. Ein Extrakt ist erst fertig, wenn der übertrag
    der übertragbare Gehalt liegt. Bei Treffer in Schritt 1: kursiver Hinweis.
 3. `# Struktur / Gliederung` — Gliederungen sind Methode, kein Geheimnis; bleiben erhalten.
 4. `# Wiederverwendbare Inhalte` — **der Kern. Ausformuliert, nicht als Stichwortliste.**
-5. `# Als Vorlage nutzbar für`
-6. `# Original` — Verweis, Format, Vertraulichkeitsvermerk.
+5. `# Tragfähigkeit` — **Pflichtabschnitt.** Trägt der Methodenkern, oder ist er nur
+   flüssig formuliert? Fakt und Einschätzung getrennt: Was das Original belegt, was es
+   behauptet, was in seiner Kategorie üblich ist. „Trägt uneingeschränkt" ist eine gültige
+   Antwort — ein leerer Abschnitt ist ein Signal, ein fehlender nicht.
+6. `# Als Vorlage nutzbar für`
+7. `# Original` — Verweis, Format, Vertraulichkeitsvermerk.
 
 **Prinzip: nicht kürzen, sondern umschichten.** Ein bereinigter Extrakt ist selten kürzer
 als vorher — der vertrauliche Anteil schrumpft, der methodische wächst. Schrumpft ein
 Extrakt beim Entkernen substanziell, war er kein Wissensdokument, sondern eine Kopie.
+
+**Warum `# Tragfähigkeit` Pflicht ist.** Ein Extrakt schreibt den Methodenkern aus und
+verleiht ihm damit die Autorität eines Wissensbestands — auch dann, wenn der Kern dünn ist.
+Ohne festen Ort für diese Einschätzung wächst die Basis in die Breite, ohne dass
+Qualitätsunterschiede sichtbar bleiben. Das trifft besonders KI-erzeugtes Material, das
+flüssig wirkt und deshalb überschätzt wird.
+
+## Dialogverläufe als Original
+
+Ein exportierter Modell-Dialog hat weder Gliederung noch einen Verfasser im üblichen Sinn.
+Er lässt sich trotzdem sauber abbilden: Die **Runden** sind die Gliederung, die
+**auslösenden Fragen** sind der Methodenkern — sie sind das Übertragbare, nicht die
+Antworten —, und die **Ergebnistexte** sind Anlassmaterial. Die Rolle ist die des
+Auftraggebers, nicht die des Autors; das gehört im Frontmatter erkennbar vermerkt, damit
+später niemand den Text für eigene Urheberschaft hält. `# Tragfähigkeit` ist hier besonders
+wichtig, weil Modellantworten formal immer belastbar aussehen.
 
 # Elevation-Kaskade
 

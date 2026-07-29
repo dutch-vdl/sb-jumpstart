@@ -35,7 +35,8 @@ import subprocess
 import sys
 
 # Verzeichnisse, die nicht Teil des Wissensbestands sind.
-SKIP_DIRS = {".git", ".github", ".obsidian", "_meta", "workspace", ".claude", "node_modules"}
+SKIP_DIRS = {".git", ".github", ".obsidian", "_meta", "workspace", "_zu-loeschen",
+             ".claude", "node_modules"}
 
 # Dateien in der Wurzel, die bewusst kein Frontmatter tragen.
 EXEMPT_FILES = {"CLAUDE.md", "README.md", "log.md"}

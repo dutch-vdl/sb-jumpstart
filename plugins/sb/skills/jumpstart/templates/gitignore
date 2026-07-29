@@ -20,3 +20,8 @@ _meta/*-snapshot.txt
 # Operative Schicht (laufende Vorgänge, Klarnamen erlaubt) — kein Teil
 # des versionierten Wissensbestands (siehe workspace/README.md):
 workspace/
+
+# Ausgangskorb. Claude kann in verbundenen Ordnern nicht löschen, sondern nur
+# verschieben — was hier landet, löscht die Person selbst im Dateimanager.
+# Beide Prüfskripte lassen diesen Ordner ebenfalls aus.
+_zu-loeschen/

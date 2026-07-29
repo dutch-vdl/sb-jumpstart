@@ -34,6 +34,14 @@ verlassen — die Liste abfragen. Treffer bleiben im Original; im Extrakt steht 
 Hinweis, was ausschließlich dort zu finden ist. Personennamen werden **nicht gestrichen,
 sondern durch die Rolle ersetzt** („der Product Owner", „die Architektin").
 
+**Stammt das Material vom eigenen Arbeitgeber, ist Frage 4 der kritische Punkt** — und
+zugleich der, an dem die maschinelle Prüfung strukturell nicht helfen kann: Der eigene
+Arbeitgeber steht als Klärungsfall (`?Name`) auf der Entitätenliste, nicht als Sperre.
+Beantworte Frage 4 für dieses Material **einzeln und sichtbar**, nicht pauschal mit den
+übrigen vier, und setze danach den Vermerk `jumpstart-checked: <Begründung>` ins
+Frontmatter des Extrakts. Ohne diesen Vermerk meldet die Datenschutzprüfung die Datei als
+offene Klärung.
+
 **4. Methodenkern ausschreiben.** Der eigentliche Wert. Vorgehen, Gliederungen,
 Entscheidungsbäume, Bewertungsraster, Argumentationsfiguren, Einwand-Antwort-Paare,
 Reihenfolge-Logiken. **Ausformuliert, nicht als Stichwortliste.** Vom Anlassfall abgelöst
@@ -48,7 +56,18 @@ Wissensdokument, sondern eine Kopie — dann sagen und neu ansetzen.
 
 **5. Aufbau schreiben.** Frontmatter mit `resource` und Herkunftsfeldern · `# Überblick` ·
 `# Struktur / Gliederung` (Gliederungen sind Methode, kein Geheimnis) ·
-`# Wiederverwendbare Inhalte` (der Kern) · `# Als Vorlage nutzbar für` · `# Original`.
+`# Wiederverwendbare Inhalte` (der Kern) · `# Tragfähigkeit` · `# Als Vorlage nutzbar für` ·
+`# Original`.
+
+`# Tragfähigkeit` ist **Pflicht**: Trägt der Kern, oder ist er nur flüssig formuliert? Fakt
+und Einschätzung getrennt — was das Original belegt, was es behauptet, was in seiner
+Kategorie üblich ist. „Trägt uneingeschränkt" ist eine gültige Antwort; Weglassen ist keine.
+Ohne diesen Abschnitt verleiht der Extrakt schwachem Material die Autorität eines
+Wissensbestands. Das trifft besonders KI-erzeugtes Material.
+
+**Ist das Original ein Modell-Dialog**, sind die Runden die Gliederung, die auslösenden
+Fragen der Methodenkern und die Ergebnistexte das Anlassmaterial. Die Rolle ist die des
+Auftraggebers, nicht die des Autors — im Frontmatter vermerken.
 
 **6. Verlinken.** Aus dem passenden Index und den verwandten Concepts heraus, bundle-relativ
 mit führendem `/`.

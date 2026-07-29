@@ -13,7 +13,10 @@ Dies ist der Arbeitsraum für laufende Vorgänge, **nicht** der Wissensbestand.
 * **Nichts verlässt den Workspace unanonymisiert.** Alles, was in den Wissensbestand oder
   nach außen geht, läuft vorher durch die Extrakt-Regel aus `conventions.md`.
 * **Arbeitsstand, kein Archiv.** Verallgemeinerbares wird im Weekly Review destilliert und
-  gehoben, Erledigtes gelöscht. Ein Workspace, der nur wächst, ist kaputt.
+  gehoben, Erledigtes wandert hinaus. Ein Workspace, der nur wächst, ist kaputt.
+* **Claude löscht nicht, Claude verschiebt.** In verbundenen Ordnern sind `rm` und `rmdir`
+  nicht erlaubt. Erledigtes landet in `_zu-loeschen/` in der Wurzel und wird gemeldet; das
+  endgültige Löschen macht du selbst im Dateimanager.
 
 ## Struktur
 

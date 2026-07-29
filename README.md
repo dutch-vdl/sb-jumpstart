@@ -1,12 +1,13 @@
 # SB Jumpstart
 
 Ein Bauplan für eine persönliche Wissensbasis, mit der Claude arbeitet — und die mit der
-Zeit besser wird, weil sie mitwächst.
+Zeit besser wird, weil sie mitwächst. Sie entsteht als Sammlung einfacher Markdown-Dateien
+nach dem offenen **Open Knowledge Format (OKF v0.1)**, nicht in einem Eigenformat.
 
 Dieses Projekt wird privat weitergegeben. Es gibt keinen Support, keine Zusagen zu
 Weiterentwicklung oder Stabilität, und es ist auf Deutsch.
 
-**Stand: 0.1.0 — Vorabfassung.** Die Struktur steht und ist geprüft, aber noch nicht an
+**Stand: 0.3.0 — Vorabfassung.** Die Struktur steht und ist geprüft, aber noch nicht an
 genügend echten Einrichtungen erprobt. Rechne in dieser Phase mit Änderungen, die auch
 bestehende Wissensbasen betreffen können. Mit 1.0.0 gilt das Setup als produktiv erprobt.
 
@@ -59,6 +60,34 @@ feste Verfahren für die wiederkehrenden Aufgaben.
 Ausführlich und ohne Fachsprache steht das in [`docs/tracks.md`](docs/tracks.md) — dort
 findest du auch, welche der drei Ausbaustufen zu dir passt. Entscheiden musst du das nicht
 vorab; Claude leitet es im Gespräch ab.
+
+## Worauf das aufsetzt
+
+Deine Wissensbasis bekommt **kein Eigenformat**. Sie folgt dem **Open Knowledge Format
+(OKF v0.1)** — einer offen dokumentierten Konvention für Wissenssammlungen aus
+Markdown-Dateien: ein Verzeichnisbaum als „Bundle", jede Datei ein abgeschlossener Gedanke
+mit einem kurzen Kopf aus Metadaten, `index.md` als Inhaltsverzeichnis, `log.md` als
+Änderungstagebuch, Verweise untereinander über stabile Pfade.
+
+Praktisch bedeutet das zweierlei. Was du aufbaust, liegt in Dateien, die jeder Texteditor
+öffnet — es gibt nichts zu exportieren, weil nichts eingesperrt ist. Und die Regeln sind
+nicht von mir erfunden, sondern nachlesbar; wo dieses Setup bewusst abweicht, steht das mit
+Begründung in deiner `okf-conformance.md`. Mitgeliefert ist ein kleines Prüfprogramm, das
+die Formattreue misst, statt sie zu behaupten.
+
+*Einordnung, damit die Erwartung stimmt:* OKF ist ein junges Format aus Googles
+`knowledge-catalog`-Projekt, und das Werkzeug-Ökosystem drumherum ist entsprechend klein.
+Der Nutzen liegt heute vor allem in der Nachvollziehbarkeit und darin, dass du auf einer
+dokumentierten Konvention sitzt statt auf einer Privatvereinbarung — nicht in einer breiten
+Werkzeuglandschaft, die es noch nicht gibt.
+
+* [OKF-Spezifikation v0.1](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)
+  — kanonisch; bei Detailfragen gilt sie, nicht dieses Repository.
+* [knowledge-catalog auf GitHub](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf)
+  — Spec, Beispiel-Bundles und Werkzeuge, unter anderem ein Visualizer, der ein Bundle als
+  Graphen rendert.
+* [Einführungsartikel im Google-Cloud-Blog](https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing/)
+  — Motivation und Hintergrund.
 
 ## Was du brauchst
 

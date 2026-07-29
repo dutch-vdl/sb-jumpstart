@@ -4,19 +4,46 @@
 # eintragen. Sie darf niemals eingecheckt werden — sie ist selbst das Leck,
 # das sie verhindern soll.
 #
+# ACHTUNG: Alle Beispieleintraege dieser Datei sind dem Pruefskript bekannt.
+# Ueberlebt einer davon in der echten Liste, bricht die Pruefung mit einer
+# Fehlermeldung ab. Das ist Absicht: Eine Liste aus Platzhaltern meldet sonst
+# "Sauber", ohne einen einzigen echten Namen geprueft zu haben — falsche
+# Sicherheit, die von allein nie auffaellt. Alle Zeilen unten sind also zu
+# ERSETZEN, nicht zu aktivieren.
+#
 # Format, eine Angabe pro Zeile:
 #   Beispielkunde GmbH   wortweise Suche, Gross-/Kleinschreibung egal
 #   =ABC                 exakte Schreibweise mit Wortgrenzen (verhindert
 #                        Treffer auf Kleinschreibung und auf Wortbestandteile)
 #   re:PRJ-\d{4}         regulaerer Ausdruck
+#   ?Firma GmbH          Klaerungsfall statt Sperre — siehe unten
 #   # Zeile mit Raute    Kommentar
-
-# WAS NICHT HINEINGEHOERT
-# Die eigene Person und der eigene Arbeitgeber. Beide stehen zwangslaeufig im
-# eigenen Bestand — im Profil, in den Karrierestationen, im Kopf der CLAUDE.md.
-# Auf der Liste wuerden sie bei jeder Sicherung gegen Dateien anschlagen, die das
-# Setup selbst angelegt hat. Sie sind Karrierekontext, nicht Schutzgegenstand.
 #
+# Die Praefixe lassen sich kombinieren: ?=ABC und ?re:… sind gueltig.
+
+# DIE EIGENE PERSON GEHOERT NICHT HINEIN
+# Der eigene Name steht zwangslaeufig im eigenen Bestand — im Profil, in den
+# Karrierestationen, im Kopf der CLAUDE.md. Als Sperre wuerde er bei jeder
+# Sicherung gegen Dateien anschlagen, die das Setup selbst angelegt hat.
+# Er ist Karrierekontext, kein Schutzgegenstand.
+
+# DER EIGENE ARBEITGEBER GEHOERT ALS KLAERUNGSFALL HINEIN
+# Als Sperre wuerde er dasselbe Problem erzeugen wie der eigene Name. Sein
+# Material ist aber regelmaessig das schutzbeduerftigste im ganzen Bestand:
+# interne Strategie, Sprechregeln, Wettbewerbsbewertungen, Konditionen. Das
+# Praefix '?' loest deshalb EINMAL PRO DATEI eine Rueckfrage aus, statt zu
+# sperren. Beantwortet wird sie mit einem Vermerk irgendwo in der Datei,
+# sinnvollerweise im Frontmatter:
+#
+#   jumpstart-checked: Frage 4 geprueft, nur Methodenkern uebernommen
+#
+# Danach ist die Datei dauerhaft still.
+#
+# BEIM ARBEITGEBERWECHSEL wird aus dem Klaerungsfall eine Sperre: das '?'
+# entfaellt. Die bestehenden Karrierestationen und resource-Pfade bekommen dann
+# 'jumpstart-ignore' mit Begruendung. Das ist ein Punkt fuer den
+# Konsistenz-Block des woechentlichen Durchlaufs.
+
 # EINZELNE AUSNAHME ERLAUBEN
 # Soll ein Treffer bewusst stehen bleiben — etwa eine Adresse, die in einen Text
 # gehoert —, kommt `jumpstart-ignore` mit Begruendung in dieselbe Zeile:
@@ -24,20 +51,28 @@
 #   Die Anleitung liegt unter github.com/name/repo. <!-- jumpstart-ignore: gehoert
 #   in den Startprompt, sonst findet niemand die Anleitung -->
 
-# --- Arbeitgeber Dritter, Kunden und Mandate ---
-# Beispielagentur GmbH
-# =XYZ
+# --- Der eigene Arbeitgeber (als Klaerungsfall, mit '?') ---
+# ?<Name des Arbeitgebers>
+# ?=<Kuerzel>
+
+# --- Ehemalige Arbeitgeber (als Sperre, ohne '?') ---
+# <Name der frueheren Station>
 
 # --- Kunden und Mandate ---
-# Beispielkunde AG
-# Beispielprodukt
+# <Kundenname>
+# <Produkt- oder Projektname des Kunden>
 
 # --- Personen (eigene Kontakte, Kollegen, Kundenkontakte) ---
-# Vorname Nachname
+# <Vorname Nachname>
 
 # --- Geraete, Hosts, Repositories ---
-# meingeraet
-# meinbenutzername/mein-repo
+# <Geraetename>
+# <Benutzername in Pfaden und Konten>
+#
+# Die Adresse des EIGENEN Wissensbasis-Repositorys gehoert hier NICHT hinein.
+# Sie steht seit Fassung 0.2.0 als setup_source im Kopf der Wissensbasis und in
+# der Bedienungsanleitung — als Sperre wuerde sie nur Fehlalarme erzeugen.
+# Fremde Repo-Adressen in Quellenangaben koennen dagegen sinnvoll sein.
 
 # --- Projektkennungen ---
-# re:PRJ-\d{4}
+# re:<KUERZEL>-\d{4}

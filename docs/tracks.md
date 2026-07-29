@@ -5,7 +5,8 @@ musst sie nicht lesen.*
 
 Das Setup gibt es in drei Ausprägungen. Sie unterscheiden sich **nicht** darin, wie dein
 Wissen aufgebaut ist — Ordner, Dokumenttypen, Regeln und Versionsnummern sind überall
-gleich. Sie unterscheiden sich nur darin, **womit du arbeitest** und **wie Neuerungen an
+gleich, und in allen dreien folgt deine Wissensbasis demselben offenen Dateiformat
+(Open Knowledge Format v0.1, siehe README). Sie unterscheiden sich nur darin, **womit du arbeitest** und **wie Neuerungen an
 diesem Setup bei dir ankommen**.
 
 Wenn du unsicher bist: Nimm Stufe 1. Aufsteigen kannst du jederzeit, und Claude erinnert

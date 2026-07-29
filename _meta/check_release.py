@@ -22,6 +22,9 @@ Geprueft wird:
   9. Die im Repo aktiv benutzten Schutzkopien sind mit ihren ausgelieferten
      Vorlagen deckungsgleich. Driften sie auseinander, schuetzt das Repo sich
      selbst mit einem aelteren Stand als den, den es weitergibt.
+ 10. Die Standangabe in README.md nennt dieselbe Version wie VERSION. Sie ist der
+     erste Satz, den ein Empfaenger liest — eine veraltete Angabe genau dort
+     beschaedigt das Kernversprechen des Projekts.
 """
 
 import json
@@ -35,6 +38,8 @@ PLUGIN_VERSION_FILE = os.path.join(PLUGIN_DIR, "VERSION")
 PLUGIN_MANIFEST = os.path.join(PLUGIN_DIR, ".claude-plugin", "plugin.json")
 MARKETPLACE = os.path.join(".claude-plugin", "marketplace.json")
 CHANGELOG = "CHANGELOG.md"
+README = "README.md"
+README_STAND = re.compile(r"\*\*Stand:\s*(\d+\.\d+\.\d+)")
 TEMPLATES = os.path.join(PLUGIN_DIR, "skills", "jumpstart", "templates")
 
 # Aktiv benutzte Kopie -> ausgelieferte Vorlage. Eine Quelle, zwei Orte.
@@ -179,6 +184,21 @@ def main():
                         continue
                     if not os.path.exists(pfad):
                         notes.append(f"{CHANGELOG} v{version}: genannter Pfad '{pfad}' existiert nicht.")
+
+    # 10. Standangabe der README
+    readme = read_text(README)
+    if readme is not None:
+        m = README_STAND.search(readme)
+        if not m:
+            errors.append(
+                f"{README}: keine Standangabe der Form '**Stand: X.Y.Z' gefunden. "
+                "Sie ist der erste Satz, den ein Empfaenger liest."
+            )
+        elif version and m.group(1) != version:
+            errors.append(
+                f"{README} nennt Stand {m.group(1)}, {VERSION_FILE} steht auf {version}. "
+                "Die Angabe im Fliesstext nachziehen."
+            )
 
     # 9. Schutzkopien gegen ihre Vorlagen
     for kopie, vorlage in SPIEGEL:

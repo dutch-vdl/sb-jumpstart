@@ -25,8 +25,13 @@ Marker-Governance und Versionierungslogik sind ausformuliert und werden übernom
 Persönliche wird aus dem Interview gefüllt. Der Hinweisblock am Anfang oder Ende jeder
 Vorlage wird beim Anlegen entfernt.
 
-## Vier Dinge, die du nicht übergehen darfst
+## Fünf Dinge, die du nicht übergehen darfst
 
+* **Ablageort zuerst.** Bevor irgendetwas entsteht: prüfen, ob der verbundene Ordner leer
+  oder eine bestehende Wissensbasis ist. Ist er weder das eine noch das andere — ein
+  Code-Repository, ein Dokumentenordner, dieses Repository selbst — halte an und frag nach.
+  Ein Aufbau am falschen Ort fällt oft erst auf, wenn er schon in einer fremden Historie
+  steht. Einzelheiten in Phase 0.1.
 * **Interview vor Struktur.** Nichts anlegen, bevor du verstanden hast, welche Bereiche die
   Person dokumentieren will.
 * **Vorschlag vor Ausführung.** Jede geplante Struktur erst zur Freigabe zeigen.

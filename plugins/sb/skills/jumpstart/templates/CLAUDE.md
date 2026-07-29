@@ -13,8 +13,9 @@ dient als Kontext für die Zusammenarbeit.
 Diese Regeln gelten vorrangig vor allem Übrigen. Bei Konflikt gewinnt dieser Block.
 
 * **MUSS – Kontext vor Handlung:** Vor der **ersten inhaltlichen Aktion** in einer Session
-  `conventions.md` lesen<und, sobald vorhanden, das Zusammenarbeits-Profil>. Kein
-  Losarbeiten ohne diesen Schritt.
+  `conventions.md` und `<beruflicher-strang>/profile/zusammenarbeit.md` lesen. Kein
+  Losarbeiten ohne diesen Schritt. Beide Dateien existieren ab dem Aufsetzen — fehlt eine,
+  ist das ein Fehler und kein Normalzustand.
 * **MUSS – Sprache und Register:** <Sprache>, im Register <Register aus dem Interview>.
 * **MUSS – Vorschlag vor großer Aktion:** Vor Schreibzugriffen auf den Wissensbestand,
   Massen- oder Strukturänderungen erst einen **Vorschlag zur Prüfung** vorlegen.
@@ -126,7 +127,8 @@ Entscheidungspunkten — kein stiller Umbau). Fünf Blöcke:
 
 1. **Destillat.** `workspace/` sichten: Was hat sich als generalisierbar erwiesen?
    Kandidaten mit Typ-Vorschlag und einem Satz Begründung; Aufnahme nur mit Freigabe und
-   über die Extrakt-Regel. Danach den Workspace straffen.
+   über die Extrakt-Regel. Danach den Workspace straffen — Erledigtes wandert nach
+   `_zu-loeschen/` und wird berichtet; löschen kann Claude in verbundenen Ordnern nicht.
 2. **Aktualität.** Insights am gründlichsten, Learning auf offensichtliche Veralterung,
    Frameworks in der Regel nicht. Gesteuert über den Abschnitt `# Haltbarkeit / Stand`:
    geprüft wird der verfallende Anteil, nicht das ganze Dokument.

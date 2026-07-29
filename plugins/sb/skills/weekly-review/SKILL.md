@@ -20,6 +20,12 @@ Den Workspace sichten: Was hat sich als generalisierbar erwiesen? Kandidatenlist
 Typ-Vorschlag und **einem Satz Begründung** je Kandidat. Aufnahme nur mit Freigabe und über
 die Extrakt-Regel. Danach den Workspace straffen — Erledigtes raus.
 
+**Löschen kannst du nicht.** In verbundenen Ordnern sind `rm` und `rmdir` nicht erlaubt, nur
+Verschieben. „Straffen" heißt deshalb: Erledigtes nach `_zu-loeschen/` in der Wurzel
+verschieben (der Ordner ist von beiden Prüfungen und von der Versionierung ausgenommen) und
+**berichten, was dorthin gewandert ist**. Das endgültige Löschen macht die Person selbst.
+Behaupte nie, aufgeräumt zu haben, wenn nur verschoben wurde.
+
 ## Block 2 — Aktualität
 
 Nach Haltbarkeit gestaffelt: **Insights** am gründlichsten, **Learning** auf offensichtliche
@@ -55,6 +61,11 @@ Aufnahme nur mit Freigabe.
   veraltet die Liste und die Prüfung wird wirkungslos.
 * Frontmatter vollständig? Version und `log.md` synchron? Ab Stufe 2 zusätzlich: stimmt der
   Repository-Stand, gibt es ungesicherte Änderungen?
+* **Hat sich die berufliche Situation geändert?** Ein Arbeitgeberwechsel ändert die
+  Entitätenliste: Der bisherige Arbeitgeber wird vom Klärungsfall (`?Name`) zur Sperre
+  (`Name`), der neue umgekehrt zum Klärungsfall. Die bestehenden Karrierestationen und
+  `resource`-Pfade bekommen dann `jumpstart-ignore` mit Begründung — sonst blockiert der
+  eigene Lebenslauf jede weitere Sicherung. Einmal fragen, nicht jede Woche.
 * Offene Ausbaustufen aus `CLAUDE.md` prüfen. Ist die Basis so gewachsen, dass der Aufstieg
   auf die nächste Stufe oder ein Backup der Asset Library sinnvoll wird? Dann **einmalig**
   erinnern und die Entscheidung notieren — nicht jede Woche erneut.
@@ -68,6 +79,15 @@ gehört nicht in jedes Setup.
 
 Bericht vorlegen, Entscheidungen einholen, dann Sichern vorschlagen — der Durchlauf ist ein
 Sicherungsvorgang, also **ein** Versionsschritt.
+
+---
+
+## Der Termin
+
+Der Durchlauf braucht einen Auslöser, sonst findet er nicht statt. Zwei Wege, Empfehlung
+zuerst: eine **geplante Aufgabe**, die wöchentlich feuert (nach dem Anlegen einmal manuell
+auslösen, damit die Werkzeugfreigaben sitzen), oder ein **Eintrag in `workspace/TASKS.md`
+mit Datum** als Minimum. Fehlt beides, schlag es beim ersten Durchlauf vor.
 
 ---
 

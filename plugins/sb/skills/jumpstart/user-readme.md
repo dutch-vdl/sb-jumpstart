@@ -37,7 +37,8 @@ Wissenssystem mit der Zeit in einen Zettelberg.
 **Die Regel-Dateien:** Ganz oben im Hub liegen drei besondere Dateien. `CLAUDE.md` ist die
 Bedienungsanleitung für Claude — dort steht, was Claude in jedem Gespräch beachten muss.
 `conventions.md` sind die Spielregeln deiner Wissensbasis. `okf-conformance.md` beschreibt
-das Dateiformat und sagt, wie die kleinen Prüfprogramme aufgerufen werden; die liegen im
+das Dateiformat — deine Basis folgt dem offenen **Open Knowledge Format (OKF v0.1)**, keinem
+Eigenformat — und sagt, wie die kleinen Prüfprogramme aufgerufen werden; die liegen im
 Unterordner `_meta`. Alle drei sind beim Setup gemeinsam mit dir entstanden und wachsen mit.
 
 Daneben liegen zwei Dateien, die du selbst nie anfassen musst: `index.md` ist das
