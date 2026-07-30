@@ -1,11 +1,9 @@
 # SB Jumpstart
 
-Ein Bauplan für eine persönliche Wissensbasis, mit der Claude arbeitet — und die mit der
-Zeit besser wird, weil sie mitwächst. Sie entsteht als Sammlung einfacher Markdown-Dateien
-nach dem offenen **Open Knowledge Format (OKF v0.1)**, nicht in einem Eigenformat.
+Bauplan für eine persönliche Wissensbasis für die tägliche Arbeit mit einem LLM wie Claude. Sie entsteht als Sammlung einfacher Markdown-Dateien
+nach dem offenen **Open Knowledge Format (OKF v0.1)**, welches die Lesbarkeit von Agenten und Menschen zugleich ermöglicht.
 
-Dieses Projekt wird privat weitergegeben. Es gibt keinen Support, keine Zusagen zu
-Weiterentwicklung oder Stabilität, und es ist auf Deutsch.
+Dieses Projekt wird primär an Peers des Autors weitergegeben und auf Deutsch entwickelt.
 
 **Stand: 0.3.0 — Vorabfassung.** Die Struktur steht und ist geprüft, aber noch nicht an
 genügend echten Einrichtungen erprobt. Rechne in dieser Phase mit Änderungen, die auch
