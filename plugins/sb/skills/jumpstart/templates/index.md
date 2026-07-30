@@ -1,12 +1,12 @@
 ---
-okf_version: "0.1"
+okf_version: "0.2"
 version: "1.0.0"
 setup_version: "<Version des Jumpstart-Pakets>"
 setup_source: "https://github.com/dutch-vdl/sb-jumpstart"   # jumpstart-ignore: Herkunft der Wissensbasis, gehoert hierher
 setup_track: "<lokal | verteilt | mitlaufend>"
 title: Knowledge Hub
 description: Persönliche Wissensbasis von <Name>.
-timestamp: <JJJJ-MM-TT>T00:00:00Z
+generated: { by: human:<vorname-nachname>, at: <JJJJ-MM-TT>T00:00:00Z }
 ---
 
 # <Hauptstrang 1>

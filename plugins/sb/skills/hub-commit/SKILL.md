@@ -48,6 +48,11 @@ python3 _meta/check_privacy.py
 Das ist keine Empfehlung. Datenschutz-Treffer werden entfernt oder abstrahiert; wer einen
 bewusst freigibt, schreibt `jumpstart-ignore` **mit Begründung** daneben.
 
+**Weiche Hinweise sperren nicht.** Ein überschrittenes `stale_after` oder ein fehlendes
+`generated` ist ein Pflegebefund, kein Formatfehler — er gehört in den Weekly Review, nicht
+in den Abbruch. Wer weiche Hinweise wie Sperren behandelt, gewöhnt sich an, Prüfungen zu
+übergehen; dann wirkt auch die harte nicht mehr.
+
 **7. Commit vorschlagen (ab Stufe 2).** Nachricht nach Conventional Commits:
 `typ(scope): kurzbeschreibung`. Nur die gewünschten Dateien stagen. **Explizite Freigabe
 einholen**, dann committen.

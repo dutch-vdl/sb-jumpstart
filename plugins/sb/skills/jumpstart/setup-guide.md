@@ -94,10 +94,11 @@ parallel in die Asset Library, verlinkt aus dem Hub.
 
 * **Markdown statt Notiz-App:** offenes Format, keine Plattformbindung, jeder Editor und
   jede KI kann es lesen. Als Format-Standard bewährt sich das **Open Knowledge Format
-  (OKF v0.1)** von Google Cloud — Markdown mit YAML-Frontmatter, ein einziges Pflichtfeld
+  (OKF v0.2)** von Google Cloud — Markdown mit YAML-Frontmatter, ein einziges Pflichtfeld
   (`type`), reservierte Dateinamen `index.md` und `log.md`, ein Concept ist eine Datei,
-  der Pfad ist die Identität. Optional, aber empfohlen: Es kostet fast nichts und hält die
-  Basis maschinenlesbar und werkzeugneutral. Kanonische Quellen am Ende dieser Datei.
+  der Pfad ist die Identität. Dazu ein Satz freiwilliger Felder, die Herkunft, Haltbarkeit
+  und Lebenszyklus maschinenlesbar machen. Optional, aber empfohlen: Es kostet fast nichts
+  und hält die Basis werkzeugneutral. Kanonische Quellen am Ende dieser Datei.
 * **Trennung Hub / Asset Library:** Versionsverwaltung ist für Text gebaut, nicht für
   Multi-GB-Binärdateien. Originale bleiben in der Asset Library, der Hub hält den Extrakt
   plus Verweis. So bleibt die Basis klein und das Wissen trotzdem vollständig erreichbar.
@@ -528,14 +529,14 @@ Ihr Frontmatter trägt vier Felder, die zusammengehören:
 
 ```yaml
 ---
-okf_version: "0.1"
+okf_version: "0.2"
 version: "1.0.0"          # Reife der eigenen Wissensbasis
-setup_version: "0.3.0"    # Version dieses Setups, aus der die Basis entstand
+setup_version: "0.4.0"    # Version dieses Setups, aus der die Basis entstand
 setup_source: "https://github.com/dutch-vdl/sb-jumpstart"   # woher Aktualisierungen kommen
 setup_track: "lokal"      # lokal | verteilt | mitlaufend
 title: Knowledge Hub
 description: …
-timestamp: …
+generated: { by: human:vorname-nachname, at: … }
 ---
 ```
 
@@ -701,8 +702,16 @@ vorkommt, ist meist keiner.
 ### Haltbarkeits-Hierarchie und Haltbarkeitsvermerk
 
 **Frameworks > Learning > Insights.** Die Pflege-Kadenz läuft umgekehrt: Insights werden am
-häufigsten geprüft und ausgemistet, Frameworks am seltensten angefasst. Alle drei tragen
-ein `timestamp`.
+häufigsten geprüft und ausgemistet, Frameworks am seltensten angefasst.
+
+Die Haltbarkeit wird als **Datum** geführt, nicht als Gefühl: `stale_after: JJJJ-MM-TT`.
+Richtwerte bei der Neuanlage — Insight: `date` plus zwölf Monate. Learning: `generated.at`
+plus vierundzwanzig Monate. Framework: kein Feld, also kein Verfall. Das Prüfskript meldet
+überschrittene Daten, und daraus wird die Arbeitsliste des Weekly Review. Der Gegenzug dazu
+ist `verified`: Wer ein abgelaufenes Concept prüft und für weiter gültig hält, trägt die
+Bestätigung nach und setzt ein neues Datum. Ohne diesen Gegenzug wächst eine Warnliste, die
+niemand mehr abarbeitet — und eine Warnung, die man gewohnheitsmäßig übergeht, schützt
+nichts.
 
 Mischt ein Concept einen dauerhaften Methodenkern mit verfallenden Bestandteilen — konkrete
 Zahlen, Marktstände, Details einer Benutzeroberfläche —, bekommt es einen Abschnitt
@@ -713,10 +722,22 @@ unangetastet. Empfohlen für `Insight`, optional für `Learning`.
 
 ### Frontmatter-Standard
 
-Pflicht ist `type`. Empfohlen: `title`, `description`, `tags`, `timestamp`. Bei
+Pflicht ist `type`. Empfohlen: `title`, `description`, `tags`, `generated`. Bei
 `Deliverable` zusätzlich `resource` (Verweis auf das Original als `asset:/pfad`) sowie
 Herkunftsfelder wie `source_station`, `client`, `date`. Cross-Links zwischen Concepts als
 bundle-relative Links mit führendem `/` — die bleiben beim Verschieben stabil.
+
+**Die vier freiwilligen Felder** — sie erzwingen nichts, aber ihre Abwesenheit sagt etwas
+aus. `generated: { by: human:<kennung>, at: <ISO-8601> }` hält Urheber und Zeitpunkt fest;
+die Kennung wird einmal festgelegt und danach nicht mehr geändert. `sources` führt Belege
+als Liste (`id`, `title`, `resource`), im Body per Fußnote `[^<id>]` referenzierbar.
+`stale_after` ist das Verfallsdatum, `verified` die Gegenbuchung dazu.
+
+**`status` ist reserviert** — genau einer von `draft`, `stable`, `deprecated`; fehlt das
+Feld, gilt `stable`. Wer einen eigenen Zustand führen will, etwa den Stand eines Vorhabens,
+nimmt ein eigenes Feld (`project_status`). Sonst kollidiert die eigene Angabe mit dem Format
+und beide werden unbrauchbar: Werkzeuge lesen einen Lebenszyklus, wo eine Projektnotiz
+steht. Das ist ein Fehler, der erst auffällt, wenn er schon in hundert Dateien steht.
 
 Zwei Kleinigkeiten, die regelmäßig Zeit kosten: Frontmatter-Werte, die einen **Doppelpunkt**
 enthalten, gehören in Anführungszeichen, sonst bricht der YAML-Parser. Und auslieferbare
@@ -802,7 +823,7 @@ wie er zu einer Handlung führen kann. Vier Regeln halten den Bestand rauschfrei
 * **Unbeschaffbares aktiv verwerfen** — mit kurzem Vermerk „aktiv verworfen, nicht
   vergessen", damit die Entscheidung nachvollziehbar bleibt und die Lücke nicht erneut als
   Aufgabe auftaucht.
-* **Pausierte Vorhaben parken** — `status: pausiert (seit MM/JJJJ)` plus Parkvermerk; ihre
+* **Pausierte Vorhaben parken** — `project_status: pausiert (seit MM/JJJJ)` plus Parkvermerk; ihre
   offenen Fragen fallen bis zur Wiederaufnahme aus dem wöchentlichen Check.
 * **Wartende Marker terminieren** — steht nur noch eine Bestätigung aus, wird der Marker
   zum Wiedervorlagepunkt mit Datum.
@@ -813,9 +834,8 @@ wie er zu einer Handlung führen kann. Vier Regeln halten den Bestand rauschfrei
 
 Externe Erkenntnisse aus reinen Web-Quellen haben kein Original zum Ablegen. Regel: `date`
 ist das **Publikationsdatum** der Quelle (mindestens `JJJJ-MM`), `resource` zeigt auf einen
-**Erfassungs-Extrakt** in der Asset Library, die Quell-URLs stehen im Feld `source` und in
-einem Abschnitt `# Citations`. Damit zeigt `resource` nie auf eine URL, die in einem Jahr
-tot ist.
+**Erfassungs-Extrakt** in der Asset Library, die Quell-URLs stehen im Frontmatter-Feld
+`sources`. Damit zeigt `resource` nie auf eine URL, die in einem Jahr tot ist.
 
 ### Versionierung
 
@@ -895,10 +915,24 @@ zusätzlich zur Datumsangabe die Versionsnummer — eine bewusste Erweiterung ge
 Spezifikation.
 
 Das Prüfskript prüft: fehlendes oder ungültiges Frontmatter, fehlendes `type`, eine
-`index.md` mit Frontmatter außerhalb der Wurzel — das sind **harte Verstöße** und führen zu
-einem Fehler-Exit. Tote bundle-relative Links sind **weiche Hinweise** ohne Fehler-Exit.
-Dazu die Konsistenzprüfung `version` in der Wurzel-`index.md` gegen den jüngsten
-`log.md`-Eintrag. Ausgenommen sind `.git`, `workspace/`, der Skill-Ordner und `CLAUDE.md`.
+`index.md` mit Frontmatter außerhalb der Wurzel, stehengebliebene Merge-Konfliktmarker — das
+sind **harte Verstöße** und führen zu einem Fehler-Exit. Dazu die Konsistenzprüfung `version`
+in der Wurzel-`index.md` gegen den jüngsten `log.md`-Eintrag.
+
+**Weiche Hinweise** ohne Fehler-Exit: tote bundle-relative Links, fehlendes `generated`,
+ein `status` außerhalb des Lebenszyklus-Vokabulars, ein unlesbares oder überschrittenes
+`stale_after`. Die Trennung ist Absicht — die harten Kriterien prüfen Konformität, die
+weichen den Pflegezustand. Ein Sicherungsvorgang, der an einem abgelaufenen Datum scheitert,
+führt nur dazu, dass die Prüfung umgangen wird.
+
+Ausgenommen sind `.git`, `workspace/`, der Skill-Ordner und `CLAUDE.md`.
+
+**Ein Hinweis zur Quellenlage**, der ins Konformitätsdokument gehört: v0.2 ist im Juli 2026
+über den Google-Cloud-Blog veröffentlicht worden und dort vollständig beschrieben; die
+Spezifikationsdatei im Projekt-Repository trug zu diesem Zeitpunkt noch die Versionsangabe
+0.1. Bis sie nachgezogen ist, ist der Blogbeitrag die maßgebliche Quelle für die neuen
+Felder. Das gehört als Stand-Vermerk in die Datei, nicht in den Kopf der einrichtenden
+Person.
 
 ---
 
@@ -1134,14 +1168,19 @@ Ordner leben und welche tot sind — und die Struktur der Realität anpassen, ni
 
 ## Quellen — Open Knowledge Format
 
-Das Format hinter diesem Setup ist offen dokumentiert. Bei Detailfragen gilt die Spec; der
-Blogartikel liefert Motivation und Ökosystem-Überblick:
+Das Format hinter diesem Setup ist offen dokumentiert. **Stand beim Lesen prüfen:** Die
+Trust-Signale kamen mit v0.2 (Juli 2026) und sind im Blogbeitrag dazu vollständig
+beschrieben; die Spezifikationsdatei stand zu diesem Zeitpunkt noch auf 0.1. Bis sie
+nachgezogen ist, gilt für die neuen Felder der Blogbeitrag, für alles Übrige die Spec:
 
-1. [OKF-Spezifikation v0.1 — SPEC.md](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)
+1. [OKF v0.2 adds trust signals — Google Cloud Blog](https://cloud.google.com/blog/products/data-analytics/okf-v0-2-adds-trust-signals)
+   — die fünf Trust-Signale (`sources`, `generated`, `verified`, `stale_after`, `status`),
+   ihre Syntax und die Umbenennungen gegenüber v0.1.
+2. [OKF-Spezifikation — SPEC.md](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md)
    — kanonische Spezifikation (Bundle-Struktur, Concepts, Cross-Linking, `index.md` /
    `log.md`, Konformität).
-2. [knowledge-catalog — OKF (GitHub)](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf)
+3. [knowledge-catalog — OKF (GitHub)](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf)
    — Repository mit Spec, Beispiel-Bundles und Werkzeugen, unter anderem einem
    HTML-Visualizer, der ein Bundle als interaktiven Graphen rendert.
-3. [„How the Open Knowledge Format can improve data sharing" — Google Cloud Blog](https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing/)
+4. [„How the Open Knowledge Format can improve data sharing" — Google Cloud Blog](https://cloud.google.com/blog/products/data-analytics/how-the-open-knowledge-format-can-improve-data-sharing/)
    — Primärartikel zur Einführung des Formats.

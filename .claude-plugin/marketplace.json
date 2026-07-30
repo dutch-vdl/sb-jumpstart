@@ -7,8 +7,8 @@
     {
       "name": "sb",
       "source": "./plugins/sb",
-      "description": "Persönliche Wissensbasis nach dem Open Knowledge Format (OKF v0.1) aufbauen und pflegen."
+      "description": "Persönliche Wissensbasis nach dem Open Knowledge Format (OKF v0.2) aufbauen und pflegen."
     }
   ],
-  "description": "Bauplan zum Einrichten einer persönlichen Wissensbasis mit Claude — Markdown-Dateien nach dem Open Knowledge Format (OKF v0.1)."
+  "description": "Bauplan zum Einrichten einer persönlichen Wissensbasis mit Claude — Markdown-Dateien nach dem Open Knowledge Format (OKF v0.2)."
 }

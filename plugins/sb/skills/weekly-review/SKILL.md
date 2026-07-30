@@ -28,12 +28,26 @@ Behaupte nie, aufgeräumt zu haben, wenn nur verschoben wurde.
 
 ## Block 2 — Aktualität
 
-Nach Haltbarkeit gestaffelt: **Insights** am gründlichsten, **Learning** auf offensichtliche
-Veralterung, **Frameworks** in der Regel gar nicht.
+**Die Arbeitsliste kommt aus dem Prüfskript, nicht aus dem Gefühl.** `check_okf.py` meldet
+jedes Concept, dessen `stale_after` überschritten ist. Das ist der Bestand, der geprüft wird
+— nicht alles, was alt aussieht. Der Staffelung nach bleiben **Insights** am gründlichsten,
+**Learning** auf offensichtliche Veralterung, **Frameworks** in der Regel gar nicht.
 
-Steuerung über den Abschnitt `# Haltbarkeit / Stand`: Geprüft wird der **verfallende
-Anteil**, der stabile Kern bleibt unangetastet. Concepts ohne diesen Vermerk, die ihn
-bräuchten, als Nachtrag vorschlagen.
+Innerhalb eines Concepts steuert der Abschnitt `# Haltbarkeit / Stand` die Tiefe: Geprüft
+wird der **verfallende Anteil**, der stabile Kern bleibt unangetastet. Concepts ohne diesen
+Vermerk, die ihn bräuchten, als Nachtrag vorschlagen.
+
+**Jeder Re-Check endet in einer Eintragung — sonst war er keiner.** Drei Ausgänge:
+
+* Der Inhalt gilt unverändert → `verified: [{ by: <akteur>, at: <heute> }]` nachtragen und
+  ein neues `stale_after` setzen.
+* Der Inhalt ist teilweise überholt → den verfallenden Anteil aktualisieren, dann wie oben.
+* Der Inhalt ist überholt und wird nicht nachgeführt → `status: deprecated`. Das Concept
+  bleibt erhalten und auffindbar, wird aber nicht mehr für neue Arbeit herangezogen.
+
+Concepts ohne `stale_after`, die eines bräuchten, im selben Zug nachrüsten. **Was nach dem
+Durchlauf noch als überschritten gemeldet wird, ist entweder eine bewusste Entscheidung oder
+ein liegengebliebener Rest** — beides gehört in den Bericht, keines bleibt stumm.
 
 ## Block 3 — Aufgaben-Triage
 
@@ -59,7 +73,8 @@ Aufnahme nur mit Freigabe.
 * **Entitätenliste pflegen:** neue Kunden, Projekte, Kontakte der letzten Wochen in
   `_meta/privacy-entities.txt` nachtragen. Das ist der feste Termin dafür — ohne ihn
   veraltet die Liste und die Prüfung wird wirkungslos.
-* Frontmatter vollständig? Version und `log.md` synchron? Ab Stufe 2 zusätzlich: stimmt der
+* Frontmatter vollständig — `type` und `generated` in jedem Concept? Version und `log.md`
+  synchron? Ab Stufe 2 zusätzlich: stimmt der
   Repository-Stand, gibt es ungesicherte Änderungen?
 * **Hat sich die berufliche Situation geändert?** Ein Arbeitgeberwechsel ändert die
   Entitätenliste: Der bisherige Arbeitgeber wird vom Klärungsfall (`?Name`) zur Sperre

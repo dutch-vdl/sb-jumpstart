@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Konformitaetspruefung fuer eine OKF-Wissensbasis (Open Knowledge Format v0.1).
+Konformitaetspruefung fuer eine OKF-Wissensbasis (Open Knowledge Format v0.2).
 
 Aufruf aus der Wurzel der Wissensbasis:
 
@@ -26,13 +26,21 @@ Geprueft wird:
   HART   nicht aufgeloeste Merge-Konfliktmarker in einer Datei
 
   WEICH  toter bundle-relativer Link (Ziel existiert nicht)
-  WEICH  Concept ohne `timestamp`
+  WEICH  Concept ohne `generated` (oder noch mit dem alten `timestamp`)
+  WEICH  `generated` ohne `by` oder ohne `at`
+  WEICH  `status` ausserhalb von draft/stable/deprecated
+  WEICH  `stale_after` unlesbar oder ueberschritten
+
+Die harten Kriterien pruefen Konformitaet, die weichen den Pflegezustand. Deshalb
+blockiert kein weicher Hinweis eine Sicherung: Ein ueberschrittenes Verfallsdatum ist
+kein Formatfehler, und eine Pruefung, die daran scheitert, wird umgangen statt befolgt.
 """
 
 import os
 import re
 import subprocess
 import sys
+from datetime import date
 
 # Verzeichnisse, die nicht Teil des Wissensbestands sind.
 SKIP_DIRS = {".git", ".github", ".obsidian", "_meta", "workspace", "_zu-loeschen",
@@ -40,6 +48,8 @@ SKIP_DIRS = {".git", ".github", ".obsidian", "_meta", "workspace", "_zu-loeschen
 
 # Dateien in der Wurzel, die bewusst kein Frontmatter tragen.
 EXEMPT_FILES = {"CLAUDE.md", "README.md", "log.md"}
+
+VALID_STATUS = {"draft", "stable", "deprecated"}
 
 FM_DELIM = "---"
 LINK_RE = re.compile(r"\[[^\]]*\]\((/[^)]+)\)")
@@ -71,6 +81,44 @@ def parse_frontmatter(text):
             key, value = line.split(":", 1)
             data[key.strip()] = value.strip().strip('"').strip("'")
     return data, False  # Delimiter nie geschlossen
+
+
+def check_trust_fields(relpath, data):
+    """Weiche Pruefung der OKF-v0.2-Felder (Provenance, Lebenszyklus, Haltbarkeit)."""
+    generated = data.get("generated")
+    if generated is None:
+        if "timestamp" in data:
+            soft.append(f"{relpath}: hat noch 'timestamp' statt 'generated' (v0.1-Feld).")
+        else:
+            soft.append(f"{relpath}: kein 'generated'.")
+    elif generated.strip():
+        # Inline-Mapping. Ein Block-Mapping ueber mehrere Zeilen sieht der flache
+        # Parser nicht — dann wird nicht geraten, sondern nichts gemeldet.
+        if "by:" not in generated:
+            soft.append(f"{relpath}: 'generated' ohne 'by' — der Urheber fehlt.")
+        if "at:" not in generated:
+            soft.append(f"{relpath}: 'generated' ohne 'at' — der Zeitpunkt fehlt.")
+
+    status = data.get("status")
+    if status and status not in VALID_STATUS:
+        soft.append(
+            f"{relpath}: status '{status}' ist kein Lebenszyklus-Wert "
+            f"({'/'.join(sorted(VALID_STATUS))}). Eigene Zustaende gehoeren in ein "
+            "eigenes Feld, etwa 'project_status'."
+        )
+
+    stale = data.get("stale_after")
+    if stale:
+        try:
+            faellig = date.fromisoformat(stale)
+        except ValueError:
+            soft.append(f"{relpath}: stale_after '{stale}' ist kein Datum der Form JJJJ-MM-TT.")
+        else:
+            if faellig < date.today():
+                soft.append(
+                    f"{relpath}: stale_after {stale} ist ueberschritten — pruefen und "
+                    "entweder ein neues Datum setzen oder 'verified' nachtragen."
+                )
 
 
 def newest_log_version(root):
@@ -202,8 +250,7 @@ def main():
 
         if "type" not in data:
             hard.append(f"{rel}: Pflichtfeld 'type' fehlt.")
-        if "timestamp" not in data:
-            soft.append(f"{rel}: kein 'timestamp'.")
+        check_trust_fields(rel, data)
 
     # Versionskonsistenz Wurzel-index.md <-> log.md
     with open(root_index, encoding="utf-8") as fh:

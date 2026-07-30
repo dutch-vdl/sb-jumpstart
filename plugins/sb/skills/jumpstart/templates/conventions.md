@@ -3,15 +3,22 @@ type: Reference
 title: Konventionen
 description: Arbeitsregeln dieser Wissensbasis – Typ-Vokabular, Ordnerlogik, Extrakt-Regel und Versionierung.
 tags: [meta, konventionen]
-timestamp: <JJJJ-MM-TT>T00:00:00Z
+generated: { by: human:<vorname-nachname>, at: <JJJJ-MM-TT>T00:00:00Z }
 ---
 
 # Aufbau
 
-Diese Wissensbasis folgt dem Open Knowledge Format (OKF v0.1): ein Verzeichnisbaum aus
+Diese Wissensbasis folgt dem Open Knowledge Format (OKF v0.2): ein Verzeichnisbaum aus
 Markdown-Dateien mit YAML-Frontmatter. Jedes inhaltliche Dokument („Concept") hat ein
 Pflichtfeld `type`. Die Dateinamen `index.md` (Inhaltsverzeichnis) und `log.md`
 (Änderungshistorie) sind reserviert.
+
+**Herkunft jedes Concepts (`generated`).** Jedes Concept trägt
+`generated: { by: <akteur>, at: <ISO-8601> }` — wer den Inhalt erzeugt hat und wann er
+zuletzt geändert wurde. Der Akteur ist `human:<vorname-nachname>` für selbst geschriebene
+Concepts und `agent:<werkzeug>` für maschinell erzeugte. Die Kennung wird einmal festgelegt
+und danach nicht mehr geändert: Sie ist der Anker, an dem später erkennbar bleibt, was von
+einer Person stammt und was nicht. `generated` ersetzt das frühere Feld `timestamp`.
 
 Hauptstränge: <aus Interview 1.1, je eine Zeile mit einem Satz Zweck>.
 
@@ -46,9 +53,22 @@ Typ, der nur einmal vorkommt, ist meist keiner.
 # Wissenskategorien & Haltbarkeit
 
 Drei Kategorien wiederverwendbaren Wissens, nach Haltbarkeit absteigend: **Framework >
-Learning > Insight.** Alle drei tragen ein `timestamp`. Die Aktualitätsprüfung im
-wöchentlichen Durchlauf skaliert umgekehrt zur Haltbarkeit: Insights werden am häufigsten
-geprüft und ausgemistet, Learning periodisch gesichtet, Frameworks am seltensten angefasst.
+Learning > Insight.** Die Aktualitätsprüfung im wöchentlichen Durchlauf skaliert umgekehrt
+zur Haltbarkeit: Insights werden am häufigsten geprüft und ausgemistet, Learning periodisch
+gesichtet, Frameworks am seltensten angefasst.
+
+**Haltbarkeit wird als Datum geführt, nicht als Gefühl.** Das Feld `stale_after` trägt ein
+absolutes Verfallsdatum (`JJJJ-MM-TT`). Richtwerte bei der Neuanlage: **Insight** = `date`
+plus zwölf Monate, **Learning** = `generated.at` plus vierundzwanzig Monate, **Framework**
+ohne Feld — kein Verfall, Ausnahme bei werkzeugabhängigen Frameworks, die an einen
+Release-Stand gebunden sind. Das Prüfskript meldet überschrittene Daten; daraus entsteht die
+Arbeitsliste des wöchentlichen Durchlaufs.
+
+**Der Gegenzug zum Verfall ist `verified`.** Wer ein abgelaufenes Concept prüft und
+unverändert für gültig hält, trägt `verified: [{ by: <akteur>, at: <ISO-8601> }]` nach und
+setzt ein neues `stale_after`. Ohne diesen Gegenzug sammelt sich eine Liste von Warnungen an,
+die niemand mehr abarbeitet — und eine Warnung, die man gewohnheitsmäßig übergeht, schützt
+nichts. Mehrere Bestätigungen sind zulässig; die Liste wächst, sie wird nicht überschrieben.
 
 **Pro-Concept-Haltbarkeitsvermerk** (empfohlen für `Insight`, optional für `Learning`).
 Mischt ein Concept einen dauerhaften Methodenkern mit verfallenden Bestandteilen — konkrete
@@ -60,14 +80,32 @@ verfallende Teil; der stabile Kern bleibt unangetastet.
 **Quellen ohne klassisches Original.** Erkenntnisse aus reinen Web-Quellen haben kein
 Original zum Ablegen. Regel: `date` ist das **Publikationsdatum** der Quelle (ist der Tag
 unbekannt, mindestens `JJJJ-MM`), `resource` zeigt auf einen **Erfassungs-Extrakt** in der
-Asset Library, die Quell-URLs stehen in `source` und in einem Abschnitt `# Citations`. So
-zeigt `resource` nie auf eine URL, die in einem Jahr tot ist.
+Asset Library, die Quell-URLs stehen im Frontmatter-Feld `sources`. So zeigt `resource` nie
+auf eine URL, die in einem Jahr tot ist.
 
 # Frontmatter-Standard
 
-Pflicht: `type`. Empfohlen: `title`, `description`, `tags`, `timestamp`. Bei `Deliverable`
-zusätzlich `resource` (Verweis auf das Original als `asset:/pfad`) sowie Herkunftsfelder wie
+Pflicht: `type` — das einzige Feld, ohne das ein Concept nicht konform ist.
+Empfohlen: `title`, `description`, `tags`, `generated`. Bei `Deliverable` zusätzlich
+`resource` (Verweis auf das Original als `asset:/pfad`) sowie Herkunftsfelder wie
 `source_station`, `client`, `date`.
+
+Optional, aber bedeutungstragend — ihre Abwesenheit ist kein Verstoß, sagt aber etwas aus:
+
+| Feld | Bedeutung |
+|------|-----------|
+| `sources` | Belege als strukturierte Liste (`id`, `title`, `resource`; optional `author`, `last_modified`). Im Body per Fußnote `[^<id>]` referenzierbar, damit die Zuordnung an der Aussage hängt und nicht am Dateiende. Ersetzt die frühere Body-Sektion `# Citations`. |
+| `stale_after` | Verfallsdatum. Fehlt es, verfällt das Concept nicht. |
+| `verified` | Liste unabhängiger Bestätigungen. Kein Eintrag heißt ungeprüft — nicht ungültig. |
+| `status` | Lebenszyklus, genau einer von `draft`, `stable`, `deprecated`. Fehlt das Feld, gilt `stable`. |
+
+**`status` ist für den Lebenszyklus reserviert.** Wer einen eigenen Zustand führen will —
+etwa den Stand eines Vorhabens —, nimmt ein eigenes Feld (`project_status`, `deck_status`)
+und nicht `status`. Sonst kollidiert die eigene Angabe mit dem Format, und beide werden
+unbrauchbar: Werkzeuge lesen einen Lebenszyklus, wo eine Projektnotiz steht.
+
+Eigene Felder darüber hinaus sind ausdrücklich erlaubt — das Format toleriert unbekannte
+Schlüssel und gibt sie unverändert weiter.
 
 Cross-Links zwischen Concepts als bundle-relative Links mit führendem `/` — die bleiben
 beim Verschieben stabil.
@@ -212,7 +250,7 @@ Handlung führen kann. Vier Regeln:
 * **Unbeschaffbares aktiv verwerfen** — mit Vermerk „aktiv verworfen, nicht vergessen",
   damit die Entscheidung nachvollziehbar bleibt und die Lücke nicht erneut als Aufgabe
   auftaucht.
-* **Pausierte Vorhaben parken** — `status: pausiert (seit MM/JJJJ)` plus Parkvermerk; ihre
+* **Pausierte Vorhaben parken** — `project_status: pausiert (seit MM/JJJJ)` plus Parkvermerk; ihre
   offenen Fragen fallen bis zur Wiederaufnahme aus dem wöchentlichen Check.
 * **Wartende Marker terminieren** — steht nur noch eine Bestätigung aus, wird der Marker zum
   Wiedervorlagepunkt mit Datum.
@@ -258,8 +296,8 @@ im Batch. Während der Arbeit wird **nicht** vorgebumpt.
 
 Die Version lebt synchron in der Wurzel-`index.md` (Feld `version`) und in `log.md`
 (`## JJJJ-MM-TT — vX.Y.Z`, neueste zuerst)<, ab Stufe 2 zusätzlich als Git-Tag `vX.Y.Z`>.
-Getrennt davon steht `okf_version` (Version des Formats) sowie `setup_version` und
-`setup_track` (Herkunft aus dem Jumpstart).
+Getrennt davon steht `okf_version` (Version des Formats, aktuell `0.2`) sowie
+`setup_version` und `setup_track` (Herkunft aus dem Jumpstart).
 
 Die Konformität prüft `python3 _meta/check_okf.py`. Details und bewusste Abweichungen vom
 Standard stehen in `okf-conformance.md`.

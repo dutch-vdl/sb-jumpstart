@@ -64,6 +64,13 @@ Größenordnung plus Zeitpunkt genügen oft.
    Bei Treffern: entfernen oder abstrahieren. Ein Treffer, der bewusst bleiben soll, bekommt
    `jumpstart-ignore` **mit Begründung** in derselben Zeile. Ohne Begründung ist die
    Freigabe wertlos, weil sie später niemand beurteilen kann.
+
+   **Eine Stelle verträgt den Vermerk nicht:** der Startprompt in der `README.md`. Er steht
+   in einem eingezäunten Code-Block, damit GitHub den Kopier-Button rendert — und alles in
+   diesem Block wird mitkopiert, auch ein Kommentar. Die Repo-Adresse darin ist derzeit kein
+   Treffer. Schlägt die Prüfung dort künftig an, weil die eigene Entitätenliste den Namen
+   führt, wird der Eintrag in der Liste zum Klärungsfall (`?Name`) gemacht — der Vermerk
+   gehört nicht in den Block.
 3. **Keine Formatprüfung auf dieses Repo.** `check_okf.py` prüft Wissensbasen, und
    dieses Repository ist keine — es hat weder Wurzel-`index.md` noch `log.md`. Das
    Skript liegt hier ausschließlich als Vorlage unter

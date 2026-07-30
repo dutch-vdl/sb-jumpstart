@@ -43,6 +43,18 @@ oder Regel überhaupt vorhanden? Wurde sie seit dem Aufsetzen individuell angepa
 eigene Anpassung wird nicht stillschweigend überschrieben.** Bei Konflikt beide Fassungen
 zeigen und entscheiden lassen.
 
+**Wie „individuell angepasst" festgestellt wird:** Vergleichsmaßstab ist die Vorlage im Stand
+der eigenen `setup_version` — im Repository der Quelle unter dem Tag dieser Version, bei
+Stufe 1 über die Rohdatei-Adresse desselben Tags. Ohne diesen Maßstab bleibt die Frage
+Ratensache.
+
+**Verglichen werden Abschnitte, nicht ganze Dateien.** Eine eingerichtete Basis weicht von
+der Vorlage überall ab, weil beim Aufsetzen alle Platzhalter gefüllt wurden — ein
+Ganzdatei-Vergleich meldet deshalb jede Datei als angepasst und wird wertlos. Maßgeblich
+sind die Abschnitte, die der Migrationshinweis benennt: Nur dort wird verglichen, und nur
+dort entsteht ein Konflikt. Nennt ein Migrationshinweis keine Abschnitte, ist er unfertig —
+das melden statt raten.
+
 **5. Gebündelt vorlegen.** Eine Liste mit je einer Zeile: was ändert sich, warum, welche
 Datei. Klassifiziert nach *empfohlen*, *optional* und *betrifft dich nicht*. Dann Freigabe
 einholen — einzeln oder als Ganzes.

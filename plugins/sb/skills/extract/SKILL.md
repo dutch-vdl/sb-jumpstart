@@ -54,7 +54,9 @@ Testfrage: *Brauche ich das noch, wenn ich morgen in einem anderen Kontext vor e
 methodische wächst. Schrumpft ein Extrakt beim Entkernen substanziell, war er kein
 Wissensdokument, sondern eine Kopie — dann sagen und neu ansetzen.
 
-**5. Aufbau schreiben.** Frontmatter mit `resource` und Herkunftsfeldern · `# Überblick` ·
+**5. Aufbau schreiben.** Frontmatter mit `type`, `generated`, `resource` und
+Herkunftsfeldern — zitiert der Extrakt fremdes Material, kommt es als `sources`-Eintrag dazu,
+nicht als Linkliste im Body. Dann: `# Überblick` ·
 `# Struktur / Gliederung` (Gliederungen sind Methode, kein Geheimnis) ·
 `# Wiederverwendbare Inhalte` (der Kern) · `# Tragfähigkeit` · `# Als Vorlage nutzbar für` ·
 `# Original`.

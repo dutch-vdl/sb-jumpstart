@@ -27,23 +27,32 @@ nicht danebengelegt.
 
 **2. Original ablegen.** In den Insights-Bucket der Asset Library. **Bei reinen Web-Quellen
 ohne Original:** einen Erfassungs-Extrakt anlegen und `resource` darauf zeigen lassen; `date`
-ist dann das **Publikationsdatum** der Quelle (mindestens `JJJJ-MM`), die URLs stehen in
-`source` und in einem Abschnitt `# Citations`. So zeigt der Verweis nie auf eine Adresse,
-die in einem Jahr tot ist.
+ist dann das **Publikationsdatum** der Quelle (mindestens `JJJJ-MM`), die URLs stehen im
+Frontmatter-Feld `sources` — je Beleg ein Eintrag mit `id`, `title` und `resource`. So zeigt
+der Verweis nie auf eine Adresse, die in einem Jahr tot ist.
 
 **3. Kernzahlen mit Fundstelle.** Jede übernommene Zahl bekommt ihre Quelle — Studie, Jahr,
 Seite oder Abschnitt. **Zahlen werden nie gerundet oder geglättet.** Wer eine Zahl ohne
 Fundstelle übernimmt, hat sie in einem halben Jahr nicht mehr belegen können.
+
+Die Zuordnung hängt an der Aussage, nicht am Dateiende: Im Body verweist die Fußnote
+`[^<source-id>]` auf den passenden `sources`-Eintrag. Beim späteren Umschreiben bleibt so
+erkennbar, welche Zahl an welchem Beleg hängt — bei einer Liste am Ende geht genau das
+verloren.
 
 **4. Kurze Vertraulichkeitsprüfung.** Auch bei externem Material: Enthält der Entwurf
 Lizenzbedingungen, personenbezogene Angaben oder Daten, deren Weitergabe die Quelle
 untersagt? Lizenzpflichtige Studien bleiben im Original; im Insight steht der Verweis, nicht
 der Nachdruck.
 
-**5. Haltbarkeitsvermerk setzen.** Abschnitt `# Haltbarkeit / Stand` mit zwei Teilen: der
-**stabile Kern** (die These, der Mechanismus, was übertragbar bleibt) und der **verfallende
-Anteil** (Zahlen, Marktstände, Zeitbezüge). Ohne diesen Vermerk kann die spätere
-Aktualitätsprüfung nur alles oder nichts anfassen.
+**5. Haltbarkeit setzen — zweiteilig.** Im Frontmatter das Feld `stale_after`: bei einem
+`Insight` das `date` plus zwölf Monate. Im Body der Abschnitt `# Haltbarkeit / Stand` mit
+zwei Teilen: der **stabile Kern** (die These, der Mechanismus, was übertragbar bleibt) und
+der **verfallende Anteil** (Zahlen, Marktstände, Zeitbezüge).
+
+Das Feld sagt *wann* geprüft wird, der Abschnitt sagt *was* dabei angefasst wird. Fehlt das
+Feld, meldet sich das Concept nie von selbst; fehlt der Abschnitt, kann die Prüfung nur
+alles oder nichts anfassen.
 
 **6. Relevanz begründen.** Ein bis zwei Sätze: Wofür ist das nützlich, welche Annahme stützt
 oder widerlegt es? **Ein Insight ohne Verwendungszweck ist abgelegt, nicht genutzt.** Wenn

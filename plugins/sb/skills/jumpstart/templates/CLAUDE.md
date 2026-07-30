@@ -5,7 +5,7 @@
 
 # Knowledge Hub — Bedienungsanleitung für Claude
 
-Dies ist die persönliche Wissensbasis von **<Name>** (Open Knowledge Format v0.1). Sie
+Dies ist die persönliche Wissensbasis von **<Name>** (Open Knowledge Format v0.2). Sie
 dient als Kontext für die Zusammenarbeit.
 
 ## 0 · Nicht verhandelbar (immer, ohne Ausnahme)
@@ -129,9 +129,11 @@ Entscheidungspunkten — kein stiller Umbau). Fünf Blöcke:
    Kandidaten mit Typ-Vorschlag und einem Satz Begründung; Aufnahme nur mit Freigabe und
    über die Extrakt-Regel. Danach den Workspace straffen — Erledigtes wandert nach
    `_zu-loeschen/` und wird berichtet; löschen kann Claude in verbundenen Ordnern nicht.
-2. **Aktualität.** Insights am gründlichsten, Learning auf offensichtliche Veralterung,
-   Frameworks in der Regel nicht. Gesteuert über den Abschnitt `# Haltbarkeit / Stand`:
-   geprüft wird der verfallende Anteil, nicht das ganze Dokument.
+2. **Aktualität.** Das Prüfskript meldet, welche Concepts ihr `stale_after` überschritten
+   haben — das ist die Arbeitsliste, nicht der ganze Bestand. Innerhalb eines Concepts steuert
+   der Abschnitt `# Haltbarkeit / Stand` die Prüfung: geprüft wird der verfallende Anteil,
+   nicht das ganze Dokument. Jeder Re-Check endet in einer von zwei Eintragungen — einem neuen
+   `stale_after`, oder einem `verified`-Eintrag, wenn der Inhalt unverändert gilt.
 3. **Aufgaben-Triage.** Erledigtes raus, Überfälliges nach vorn, Neues einsammeln,
    Marker-Governance anwenden. Jede Aufgabe braucht ein Datum.
 4. **Regel-Ernte.** Was hat die Woche über die Zusammenarbeit gelehrt? Korrekturen und

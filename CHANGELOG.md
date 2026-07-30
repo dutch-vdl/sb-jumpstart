@@ -12,6 +12,98 @@ produktiv erprobt.
 
 ---
 
+## v0.4.0 — 2026-07-30
+
+**Klasse:** MINOR
+**Betrifft:** alle Stufen
+**Dateien:** docs/release-gate.md, plugins/sb/skills/jumpstart-upgrade/SKILL.md, plugins/sb/skills/jumpstart/templates/index.md, plugins/sb/skills/jumpstart/templates/conventions.md, plugins/sb/skills/jumpstart/templates/okf-conformance.md, plugins/sb/skills/jumpstart/templates/check_okf.py, plugins/sb/skills/jumpstart/templates/CLAUDE.md, plugins/sb/skills/insight/SKILL.md, plugins/sb/skills/weekly-review/SKILL.md, plugins/sb/skills/extract/SKILL.md, plugins/sb/skills/hub-commit/SKILL.md, plugins/sb/skills/jumpstart/setup-guide.md, plugins/sb/skills/jumpstart/user-readme.md, README.md, .claude-plugin/marketplace.json, plugins/sb/.claude-plugin/plugin.json
+
+### Was sich ändert
+
+Das Setup folgt jetzt **OKF v0.2**. Die Fassung kam im Juli 2026 und ist additiv: `type`
+bleibt das einzige Pflichtfeld, alle neuen Felder sind freiwillig, eine v0.1-Basis bleibt
+gültig. Übernommen werden vier der fünf Trust-Signale.
+
+`generated: { by, at }` ersetzt `timestamp` und hält neben dem Zeitpunkt fest, **wer** einen
+Eintrag erzeugt hat — die Unterscheidung zwischen selbst geschrieben und maschinell erzeugt
+lässt sich später nicht mehr rekonstruieren, wenn sie nicht beim Schreiben festgehalten
+wird. `sources` ersetzt die Body-Sektion `# Citations` und macht Belege aus Fließtext zu
+Daten; im Body hängt die Zuordnung per Fußnote an der einzelnen Aussage statt als Liste am
+Dateiende. `stale_after` führt Haltbarkeit als Datum statt als Gefühl — daraus entsteht die
+Arbeitsliste des Weekly Review. `verified` ist der Gegenzug dazu: Wer ein abgelaufenes
+Concept prüft und für gültig hält, trägt die Bestätigung nach und setzt ein neues Datum.
+Ohne diesen Gegenzug wächst eine Warnliste, die niemand mehr abarbeitet — und eine Warnung,
+die man gewohnheitsmäßig übergeht, schützt nichts.
+
+Das fünfte Signal, die *Attested Computation*, bleibt bewusst draußen: Sie belegt maschinell
+ausgeführte Berechnungen und ist für Datenplattformen gebaut. In einer persönlichen
+Wissensbasis gibt es den Fall nicht.
+
+**Unabhängig davon behoben — und der Teil, der auch ohne Interesse an v0.2 zählt:** Bisher
+hat das Setup an zwei Stellen `status: pausiert (seit MM/JJJJ)` gelehrt. In v0.2 ist `status`
+für den Lebenszyklus reserviert (`draft`, `stable`, `deprecated`). Wer der Anleitung gefolgt
+ist, hat eine Kollision im Bestand: Werkzeuge lesen dort einen Lebenszyklus, wo eine
+Projektnotiz steht. Beide Stellen lehren jetzt ein eigenes Feld (`project_status`), das
+Regelwerk sagt die Regel dahinter, und das Prüfskript nennt den Ausweg im Hinweistext mit.
+
+Das Prüfskript `check_okf.py` bekommt fünf neue **weiche** Prüfungen (fehlendes `generated`,
+Reste von `timestamp`, `generated` ohne `by`/`at`, `status` außerhalb des Vokabulars,
+`stale_after` unlesbar oder überschritten). Die harten Kriterien, der `--staged`-Modus und
+die Konfliktmarker-Erkennung bleiben unverändert. Die Trennung ist Absicht: Die harten
+Kriterien prüfen Konformität, die weichen den Pflegezustand. Ein Sicherungsvorgang, der an
+einem abgelaufenen Datum scheitert, führt nur dazu, dass die Prüfung umgangen wird.
+
+**Zur Quellenlage, offen gesagt:** v0.2 ist über den Google-Cloud-Blog veröffentlicht und
+dort vollständig beschrieben; die Spezifikationsdatei im Projekt-Repository trug beim
+Erstellen dieser Fassung noch die Versionsangabe 0.1. Bis sie nachgezogen ist, ist der
+Blogbeitrag die maßgebliche Quelle für die neuen Felder. Das Konformitätsdokument trägt
+einen entsprechenden Stand-Vermerk samt Wartungshinweis. Einschätzung: Das Risiko einer
+späteren Abweichung ist gering, weil die Änderung additiv ist — ausgeschlossen ist es nicht.
+
+### Migration
+
+Für bestehende Wissensbasen. Der Ablauf ist mechanisch; Entscheidungen fallen nur in
+Schritt 1 und 5. Der ganze Durchlauf ist **ein** Sicherungsvorgang, also ein Versionsschritt
+— in der eigenen Basis nach der eigenen Logik ein MAJOR, weil die Metadaten aller Concepts
+angefasst werden.
+
+1. **Zuerst die `status`-Kollision.** Jedes Concept mit einem eigenen `status` (Projektstand,
+   „pausiert", Bearbeitungsstand) auf ein eigenes Feld umbenennen, etwa `project_status`.
+   Vorher lohnt die Lebenszyklus-Prüfung nicht, weil sie sonst überall anschlägt.
+2. **Akteur-Kennung festlegen:** `human:<vorname-nachname>`, einmal, danach unverändert.
+   Sie ist der Anker, an dem später erkennbar bleibt, was von einer Person stammt.
+3. **`timestamp` → `generated`** in allen Concepts: Der bisherige Wert wandert unverändert
+   nach `at`, die Kennung aus Schritt 2 nach `by`. **`conventions.md` und
+   `okf-conformance.md` gehören dazu** — sie sind selbst Concepts (`type: Reference`) und
+   tragen ein eigenes Frontmatter. Sie beim Umstellen zu übersehen, ist der wahrscheinlichste
+   Fehler in diesem Schritt; das Prüfskript findet ihn.
+4. **`# Citations` → `sources`:** je Beleg ein Eintrag mit `id` und `title` im Frontmatter,
+   dazu `resource`, **sofern eine Adresse vorliegt** — viele Altbelege nennen nur Werk und
+   Seite, dann bleibt das Feld weg statt eine Adresse zu erfinden. Die Body-Sektion danach
+   entfernen. Wo im Text auf einen Beleg verwiesen wird, die Fußnote `[^<id>]` setzen.
+5. **`stale_after` nachtragen:** Insight = `date` plus zwölf Monate, Learning =
+   `generated.at` plus vierundzwanzig Monate, Framework kein Feld. Das ist die zweite Stelle
+   mit echten Entscheidungen — Richtwerte, keine Vorschrift.
+6. **Wurzel-`index.md`:** `okf_version: "0.2"` setzen, `timestamp` dort ebenfalls durch
+   `generated` ersetzen, `setup_version: "0.4.0"`.
+7. **Regeldateien nachziehen** aus den Vorlagen: `conventions.md` (Frontmatter-Standard,
+   Haltbarkeit, Marker-Governance), `okf-conformance.md` (Feldkatalog, Prüfskript-Beschreibung,
+   Quellen-Stand), `CLAUDE.md` (Formatangabe, Weekly-Review-Block 2). Eigene Anpassungen
+   bleiben erhalten — nur die betroffenen Abschnitte werden ersetzt.
+8. **`_meta/check_okf.py` durch die neue Vorlage ersetzen.** Die Datei wird beim Aufsetzen
+   unverändert übernommen; wer sie angepasst hat, gleicht die Anpassung gegen die neue
+   Fassung ab, statt sie zu überschreiben.
+9. **`python3 _meta/check_okf.py` laufen lassen.** Keine harten Verstöße — sonst stoppen.
+   Die weichen Hinweise sind ab jetzt die Arbeitsliste des Weekly Review und kein Grund,
+   nicht zu sichern.
+
+**Wer nicht migrieren will**, muss nichts tun: Eine v0.1-Basis bleibt konform. Dann aber
+auch Schritt 8 auslassen — sonst meldet das neue Prüfskript bei jedem Concept einen weichen
+Hinweis, und eine Hinweisliste, die dauerhaft voll ist, wird nicht mehr gelesen. Schritt 1
+lohnt trotzdem: Die Kollision ist unabhängig von der Formatversion ein Fehler.
+
+---
+
 ## v0.3.0 — 2026-07-29
 
 **Klasse:** MINOR · **dringend**
